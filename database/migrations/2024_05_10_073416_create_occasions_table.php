@@ -19,7 +19,7 @@ return new class extends Migration
             $table->char('licence_plate', 50);
             $table->integer('odometer');
             $table->boolean('sold')->default(false);
-            $table->boolean('show_whel_sold')->default(true);
+            $table->boolean('show_when_sold')->default(true);
             $table->char('brand', 50);
             $table->char('model', 255);
             $table->char('color', 50);

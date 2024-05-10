@@ -33,6 +33,20 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Get custom error messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Het e-mailadres is verplicht.',
+            'email.email' => 'Het e-mailadres moet een geldig e-mailadres zijn.',
+            'password.required' => 'Het wachtwoord is verplicht.',
+        ];
+    }
+
+    /**
      * Attempt to authenticate the request's credentials.
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -44,8 +58,7 @@ class LoginRequest extends FormRequest
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+            throw ValidationException::withMessages(['email' => 'De opgegeven inloggegevens zijn onjuist.',
             ]);
         }
 

@@ -27,6 +27,20 @@
                 </header>
             @endif
 
+            @if (session()->has('success'))
+            <div id="success-message" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
+                role="alert">
+                <p class="font-bold">Success</p>
+                <p>{{ session()->get('success') }}</p>
+            </div>
+        @endif
+        @if (session()->has('error'))
+            <div id="error-message" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+                <p class="font-bold">Error</p>
+                <p>{{ session()->get('error') }}</p>
+            </div>
+        @endif
+
             <!-- Page Content -->
             <main>
                 {{ $slot }}
@@ -34,3 +48,11 @@
         </div>
     </body>
 </html>
+<script>
+    setTimeout(function() {
+        document.getElementById('success-message').style.display = 'none';
+    }, 5000);
+    setTimeout(function() {
+        document.getElementById('error-message').style.display = 'none';
+    }, 5000);
+</script>

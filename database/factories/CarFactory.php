@@ -30,7 +30,6 @@ class CarFactory extends Factory
             'year' => $this->faker->numberBetween(1990, 2024),
             'body' => $this->faker->randomElement(['sedan', 'hatchback', 'SUV']),
             'fuel_type' => $this->faker->randomElement(['benzine', 'diesel', 'elektrisch']),
-            'transmission' => $this->faker->randomElement(['manual', 'automatic']),
             'power' => $this->faker->numberBetween(50, 300),
             'doors' => $this->faker->numberBetween(2, 5),
             'seats' => $this->faker->numberBetween(2, 7),

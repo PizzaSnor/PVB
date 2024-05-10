@@ -17,8 +17,8 @@
                         <div class="flex justify-between items-center">
                             <h2 class="text-2xl font-semibold">Gebruikers</h2>
                             <form action="{{ route('dashboard.users.index') }}" method="GET" class="flex">
-                                <input type="text" name="query" class="form-input w-48 focus:outline-none focus:ring-0 focus:border-orange" placeholder="Zoek...">
-                                <button type="submit" class="rounded-s-none rounded-md bg-orange px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Zoeken</button>
+                                <input type="text" name="query" class="form-input w-48 focus:outline-none focus:ring-0 focus:border-yellow border-yellow" placeholder="Zoek...">
+                                <button type="submit" class="rounded-s-none rounded-md bg-yellow px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-lime-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Zoeken</button>
                             </form>
                         </div>
                         <div class="overflow-x-auto">

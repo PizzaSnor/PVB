@@ -28,7 +28,6 @@ class Occasion extends Model
         'year',
         'body',
         'fuel_type',
-        'transmission',
         'power',
         'doors',
         'seats',

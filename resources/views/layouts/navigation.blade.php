@@ -6,19 +6,19 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <x-application-logo size="180" />
                     </a>
                 </div>
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('occasions.home')" :active="request()->routeIs('occasions.home')">
                         {{ __('Occasions') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboardd')">
+                    <x-nav-link :href="route('service.create')" :active="request()->routeIs('service.create')">
                         {{ __('Service') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboardd')">
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                         {{ __('Contact') }}
                     </x-nav-link>
                     @if (Route::has('login'))
@@ -44,7 +44,7 @@
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-xl leading-4 font-semibold rounded-md text-black bg-orange hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                  <div class="text-md"><span class="text-md font-medium">Welkom,</span>
                                     {{ Auth::user()->name }}</div>
-                               
+
 
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +56,7 @@
                                 </div>
                             </button>
                             @endauth
-                            
+
                         </x-slot>
 
                         <x-slot name="content">
@@ -64,13 +64,12 @@
                                 {{ __('Profiel') }}
                             </x-dropdown-link>
                             @auth
-                                {{-- @if (Auth::user()->isAdmin()) --}}
-                                    <x-dropdown-link :href="route('dashboard')">
-                                    {{-- <x-dropdown-link :href="route('dashboard.tasks.index')"> --}}
+                                @if (Auth::user()->isAdminOrMechanic())
+                                    <x-dropdown-link :href="route('dashboard.service.index')">
                                         {{ __('Beheren') }}
                                     </x-dropdown-link>
-                                {{-- @endcan --}}
-                        
+                                @endcan
+
                             @endauth
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
@@ -113,22 +112,21 @@
                 {{ __('Registreer') }}
             </x-responsive-nav-link>
             @endguest
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('occasions.home')" :active="request()->routeIs('occasions.home')">
                 {{ __('Occasions') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('service.create')" :active="request()->routeIs('service.create')">
                 {{ __('Service') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                 {{ __('Contact') }}
             </x-responsive-nav-link>
             @auth
-                {{-- @if (Auth::user()->isAdmin()) --}}
-                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{-- <x-responsive-nav-link :href="route('dashboard.tasks.index')" :active="request()->routeIs('dashboard.tasks.index')"> --}}
+                @if (Auth::user()->isAdminOrMechanic())
+                    <x-responsive-nav-link :href="route('dashboard.users.index')" :active="request()->routeIs('dashboard.service.index')">
                         {{ __('Beheren') }}
                     </x-responsive-nav-link>
-                {{-- @endif --}}
+                @endif
             @endauth
         </div>
 

@@ -10,7 +10,7 @@ class MechanicMiddleware
 {
     /**
      * Handle an incoming request.
-     * Redirects or next depending on if the user is an admin
+     * Redirects or next depending on if the user is an admin or mechanic
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
@@ -19,7 +19,7 @@ class MechanicMiddleware
     public function handle($request, Closure $next)
     {
 
-        if (!Auth::check() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 2)) { // mechanic en admin role_id hier straks aanpassen
+        if (!Auth::check() && (Auth::user()->role_id == 3 || Auth::user()->role_id == 2)) {
             return $next($request);
         } else {
             return redirect()->back()->with('error', 'Je hebt geen toegang tot deze pagina.');

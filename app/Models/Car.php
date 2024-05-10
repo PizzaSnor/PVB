@@ -24,7 +24,6 @@ class Car extends Model
         'year',
         'body',
         'fuel_type',
-        'transmission',
         'power',
         'doors',
         'seats',
@@ -40,8 +39,9 @@ class Car extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function planned_service()
+    public function plannedService()
     {
         return $this->hasMany(PlannedService::class);
     }
+
 }

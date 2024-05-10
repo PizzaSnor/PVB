@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('completed')->default(false);
             $table->dateTime('service_date');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

@@ -55,4 +55,10 @@ class User extends Authenticatable
     {
         return auth()->user()->role_id === 3;
     }
+
+    public function isAdminOrMechanic()
+    {
+        return auth()->user()->role_id === 3 || auth()->user()->role_id === 2;
+    }
+
 }

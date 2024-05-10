@@ -10,8 +10,8 @@ export default {
     ],
     theme: {
         extend: {
-            fontFamily: { // deze is dus nog de oude font family, die moet nog aangepast worden
-                sans: ['Tw Cen MT Std', ...defaultTheme.fontFamily.sans],
+            fontFamily: { // TODO:
+                sans: ['Open sans', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 yellow: "#E8C700",

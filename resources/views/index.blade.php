@@ -23,7 +23,9 @@
         <h1 class="text-4xl mx-4 text-center my-8">Onze nieuwste occasions!</h1>
         <div class="flex justify-center flex-col md:flex-row flex-wrap gap-4">
         @forelse($occasions as $occasion)
-            <x-occasion-card :occasion="$occasion" />
+            <a href="{{ route('occasions.view', ['id' => $occasion->id]) }}">
+                <x-occasion-card :occasion="$occasion" />
+            </a>
         @empty
             <p>Niks beschikbaar :(</p>
         @endforelse

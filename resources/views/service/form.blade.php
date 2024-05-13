@@ -6,10 +6,10 @@
         </h2>
     </x-slot>
 
-    <div class="max-w-9xl mx-40 py-6 px-4 sm:px-6 lg:px-8 mt-[100px]">
+    <div class="max-w-9xl md:mx-40 py-6 px-4 sm:px-6 lg:px-8 md:mt-[100px]">
 
-        <div class="flex justify-between mb-16">
-            <div class="w-3/5">
+        <div class="flex flex-col md:flex-row justify-between md:mb-16">
+            <div class="md:w-3/5 mx-6">
                 <p class="text-heading4 mt-2">Voor <span class="text-yellow">service</span> en <span
                         class="text-yellow">onderhoud</span> van alle <span class="text-yellow">merken</span> bent u bij
                     ons aan het juiste adres!</p>
@@ -20,7 +20,7 @@
                     <li>RDW erkend.</li>
                 </ul>
             </div>
-            <div class="w-2/5 ml-4">
+            <div class="md:w-2/5 mt-8 md:mt-0">
                 <div class="flex flex-col justify-start">
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <form action="{{ route('service.create') }}" method="post" enctype="multipart/form-data">
@@ -69,3 +69,5 @@
     </div>
         <x-footer />
 </x-app-layout>
+
+

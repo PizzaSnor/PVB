@@ -42,6 +42,7 @@ Route::middleware(AdminMiddleware::class, 'auth')->group(function () {
             Route::get('/{car}/complete', [ServiceController::class, 'markAsComplete'])->name('complete');
             Route::put('/{car}', [ServiceController::class, 'finish'])->name('finish');
         });
+        
     });
 });
 

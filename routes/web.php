@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OccasionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -8,7 +9,7 @@ use App\Http\Middleware\MechanicMiddleware;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
 
-Route::get('/', [OccasionController::class, 'home'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', function () {
     return view('contact');
@@ -41,6 +42,15 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
             Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
             Route::put('/{user}', [UserController::class, 'update'])->name('update');
             Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('home')->name('home.')->group(function () {
+            Route::get('/general', [HomeController::class, 'general'])->name('general');
+            Route::put('/general', [HomeController::class, 'update'])->name('general.update');
+
+
+            Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+            Route::put('/contact', [HomeController::class, 'updateContact'])->name('contact.update');
         });
     });
     // admin and mechanic

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\OccasionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
@@ -9,16 +8,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
 
 
-Route::get('/', [OccasionController::class, 'home'])->name('home');
-
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
-
-Route::prefix('occasions')->name('occasions.')->group(function () {
-    Route::get('/', [OccasionController::class, 'index'])->name('home');
-    Route::get('/{id}', [OccasionController::class, 'view'])->name('view');
+Route::get('/', function () {
+    return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified',])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,8 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/service/create', [ServiceController::class, 'createForm'])->name('service.create');
     Route::post('/service/create', [ServiceController::class, 'store'])->name('service.store');
 });
-Route::get('/service/create', [ServiceController::class, 'createForm'])->name('service.create');
-Route::post('/service/create', [ServiceController::class, 'store'])->name('service.store');
 
 Route::middleware(AdminMiddleware::class, 'auth')->group(function () {
 
@@ -48,7 +42,6 @@ Route::middleware(AdminMiddleware::class, 'auth')->group(function () {
             Route::get('/{car}/complete', [ServiceController::class, 'markAsComplete'])->name('complete');
             Route::put('/{car}', [ServiceController::class, 'finish'])->name('finish');
         });
-
     });
 });
 

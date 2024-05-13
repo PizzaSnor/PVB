@@ -34,6 +34,14 @@
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="service_date" class="form-label block">Service Datum</label>
+                                <input type="date" class="form-control bg-gray-100 border-none w-64 block focus:outline-yellow focus:ring-0 focus:border-yellow @error('service_date') is-invalid @enderror"
+                                    id="service_date" name="service_date" value="{{ old('service_date') }}">
+                                @error('service_date')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </div>
                         
                             <div class="mb-3 flex justify-end">
                                 <a href="{{ route('dashboard') }}" class="m-2 underline">Terug</a>

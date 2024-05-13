@@ -16,7 +16,7 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex justify-between items-center">
                             <h2 class="text-2xl font-semibold">Service auto's</h2>
-                            <form action="{{ route('dashboard.users.index') }}" method="GET" class="flex">
+                            <form action="{{ route('dashboard.service.index') }}" method="GET" class="flex">
                                 <input type="text" name="query"
                                     class="form-input w-48 focus:outline-none focus:ring-0 focus:border-yellow border-yellow"
                                     placeholder="Zoek...">
@@ -29,10 +29,10 @@
                                 <thead>
                                     <tr class="bg-slate-100 border">
                                         <th class="text-lg px-4 py-2 text-left">Kenteken</th>
-                                        <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Datum van beurt
+                                        <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Service datum
                                         </th>
                                         <th class="px-4 py-2 text-left">Afronden</th>
-                                        <th class="px-4 py-2"></th>
+                                        <th class="px-4 py-2 text-left"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,10 +40,8 @@
                                         <tr class="even:bg-white odd:bg-slate-100 border">
                                             <td class="px-4 py-2 text-left">{{ $car->licence_plate }}</td>
                                             <td class="px-4 py-2 text-left">
-                                                @if ($car->plannedService->isNotEmpty() && $car->plannedService->last()->completed)
+                                                @if ($car->plannedService->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($car->plannedService->last()->service_date)->format('d-m-Y') }}
-                                                @else
-                                                    Geen service gepland
                                                 @endif
                                             </td>
                                             </td>
@@ -61,7 +59,7 @@
                                                     </a>
                                                 </td>
                                             @else
-                                                <td></td>
+                                                <td class="px-4 py-2">Afgerond</td>
                                             @endif
                                             <td class="text-left px-4 py-2">
                                                 <form action="{{ route('dashboard.service.destroy', $car->id) }}"

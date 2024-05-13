@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Exception\RequestException;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ServiceRequest;
+
 use App\Models\Car;
+use App\Models\SiteInfo;
+use App\Models\PlannedService;
 use GuzzleHttp\Client;
 
 class ServiceController extends Controller
@@ -17,31 +21,21 @@ class ServiceController extends Controller
         return view('service.form');
     }
 
-    public function store(Request $request)
+    public function store(ServiceRequest $request)
     {
-        //omzetten naar requestValidation
-        $messages = [
-            'licence_plate.required' => 'Het kenteken is verplicht.',
-            'licence_plate.max' => 'Het kenteken mag niet langer zijn dan :max tekens.',
-            'odometer.required' => 'De kilometerstand is verplicht.',
-            'odometer.numeric' => 'De kilometerstand moet numeriek zijn.',
-        ];
-    
-        $validatedData = $request->validate([
-            'licence_plate' => 'required|string|max:50',
-            'odometer' => 'required|numeric',
-        ], $messages);
-
-        $licencePlate = str_replace('-', '', $request->input('licence_plate'));  
+        $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));
+        $licencePlate = $request->input('licence_plate');
+        $maxCarsPerDay = SiteInfo::first()->max_cars_per_day;
         $client = new Client();
-
+    
         try {
-            $response = $client->get("https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=$licencePlate");
+
+            $response = $client->get("https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=$licencePlateStripped");
             $rdwData = json_decode($response->getBody(), true);
 
-            $year = substr($rdwData[0]['datum_eerste_toelating'], 0, 4);
-    
             if (!empty($rdwData)) {
+                $year = substr($rdwData[0]['datum_eerste_toelating'], 0, 4);
+    
                 $carDetails = [
                     'user_id' => auth()->id(),
                     'licence_plate' => $licencePlate,
@@ -58,29 +52,44 @@ class ServiceController extends Controller
                     'weight' => $rdwData[0]['massa_ledig_voertuig'],
                     'tax' => $rdwData[0]['bruto_bpm'] ?? "N/A",
                 ];
+                $carDetails['odometer'] = $request->input('odometer');
 
-                $response = $client->get("https://opendata.rdw.nl/resource/8ys7-d773.json?kenteken=$licencePlate");
+
+                $response = $client->get("https://opendata.rdw.nl/resource/8ys7-d773.json?kenteken=$licencePlateStripped");
                 $fuelData = json_decode($response->getBody(), true);
     
                 if (!empty($fuelData)) {
                     $carDetails['fuel_efficiency'] = $fuelData[0]['brandstofverbruik_gecombineerd'] ?? "N/A";
                     $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'];
-                } 
-    
-                $carDetails['odometer'] = $validatedData['odometer'];
-    
+                }
+
+
+                $serviceDate = $request->input('service_date');
+                $plannedAppointmentsCount = PlannedService::whereDate('service_date', $serviceDate)->count();
+
+                if ($plannedAppointmentsCount >= $maxCarsPerDay) {
+                    return back()->with(['error' => 'Maximaal aantal auto\'s per dag bereikt voor deze datum.'])->withInput();
+                }
+
                 $car = new Car();
                 $car->fill($carDetails);
                 $car->save();
 
+                $plannedService = new PlannedService();
+                $plannedService->car_id = $car->id;
+                $plannedService->service_date = $serviceDate;
+                $plannedService->save();
+    
                 return redirect()->route('dashboard')->with('success', 'Je hebt een afspraak gemaakt voor de auto.');
             } else {
-                return back()->withErrors(['error' => 'Auto gegevens niet gevonden'])->withInput();
+                return back()->with(['error' => 'Auto gegevens niet gevonden'])->withInput();
             }
         } catch (RequestException $e) {
-            return back()->withErrors(['error' => 'Kan auto gegevens niet ophalen van de RDW API.'])->withInput();
+            return back()->with(['error' => 'Kan auto gegevens niet ophalen van de RDW API.'])->withInput();
         }
     }
+    
+    
 
 
     /**
@@ -95,7 +104,7 @@ class ServiceController extends Controller
         $cars = Car::with('plannedService')->orderBy('created_at', 'desc');
 
         if ($query) {
-            $cars->where('license_plate', 'like', "%$query%");
+            $cars->where('licence_plate', 'like', "%$query%");
         }
 
         $cars = $cars->paginate(10)->withQueryString();

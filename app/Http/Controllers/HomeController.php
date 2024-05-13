@@ -68,20 +68,26 @@ class HomeController extends Controller
     return view('home.time', compact('days', 'weekdayNames'));
 }
 
-
     public function updateTime(UpdateTimeRequest $request)
     {
         foreach ($request->days as $id => $day) {
+            if (isset($day['closed']) && $day['closed'] == 1) {
+                $openingTime = null;
+                $closingTime = null;
+            } else {
             $openingTime = date('Y-m-d H:i:s', strtotime('today ' . $day['opening_time']));
             $closingTime = date('Y-m-d H:i:s', strtotime('today ' . $day['closing_time']));
+            }
 
             Day::where('id', $id)->update([
                 'opening_time' => $openingTime,
-                'closing_time' => $closingTime
+                'closing_time' => $closingTime,
+                'closed' => isset($day['closed']) && $day['closed'] == 1 ? 1 : 0,
             ]);
         }
 
         return redirect()->route('dashboard.users.index')->with('success', 'Openingstijden zijn bijgewerkt.');
     }
+
     
 }

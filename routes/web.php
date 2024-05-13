@@ -8,6 +8,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\MechanicMiddleware;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -47,9 +48,10 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::prefix('home')->name('home.')->group(function () {
             Route::get('/general', [HomeController::class, 'general'])->name('general');
             Route::put('/general', [HomeController::class, 'update'])->name('general.update');
-
             Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
             Route::put('/contact', [HomeController::class, 'updateContact'])->name('contact.update');
+            Route::get('/time', [HomeController::class, 'time'])->name('time');
+            Route::put('/time', [HomeController::class, 'updateTime'])->name('time.update');
         });
     });
     // admin and mechanic
@@ -64,8 +66,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
             Route::get('/', [OccasionController::class, 'overview'])->name('index');
             Route::get('/{occasion}', [OccasionController::class, 'edit'])->name('edit');
             Route::delete('/{occasion}', [OccasionController::class, 'destroy'])->name('destroy');
-            Route::get('/{occasion}/sell', [OccasionController::class, 'sell'])->name('sell');
             Route::put('/{occasion}', [OccasionController::class, 'update'])->name('update');
+            Route::put('/{occasion}', [OccasionController::class, 'sell'])->name('sell');
         });
     });
 });

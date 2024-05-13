@@ -27,13 +27,12 @@
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
-
                         
                             <div class="mb-3 flex justify-end">
-                                <a href="{{ route('dashboard.tasks.index') }}" class="m-2 underline">Terug</a>
-                                <button type="submit"
-                                    class="rounded-md bg-orange cursor-pointer px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Opdracht
-                                    Aanpassen</button>
+                                <a href="{{ route('dashboard.users.index') }}" class="m-2 underline">Terug</a>
+                                <x-primary-button class="ms-3">
+                                    {{ __('Opslaan') }}
+                                </x-primary-button>
                             </div>
                         </form>
                     </div>
@@ -41,14 +40,6 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    @section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
-@endsection
     
 </x-app-layout>

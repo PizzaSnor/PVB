@@ -8,7 +8,6 @@ use App\Http\Middleware\MechanicMiddleware;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
 
-
 Route::get('/', [OccasionController::class, 'home'])->name('home');
 
 Route::get('/contact', function () {

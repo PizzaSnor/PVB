@@ -79,8 +79,8 @@ class ServiceController extends Controller
                 $plannedService->car_id = $car->id;
                 $plannedService->service_date = $serviceDate;
                 $plannedService->save();
-    
-                return redirect()->route('dashboard')->with('success', 'Je hebt een afspraak gemaakt voor de auto.');
+
+                return redirect()->route('home')->with('success', 'Je hebt een afspraak gemaakt voor de auto.');
             } else {
                 return back()->with(['error' => 'Auto gegevens niet gevonden'])->withInput();
             }
@@ -89,9 +89,6 @@ class ServiceController extends Controller
         }
     }
     
-    
-
-
     /**
      * Returns the view of the cars table overview
      *

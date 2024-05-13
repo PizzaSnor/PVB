@@ -1,5 +1,4 @@
 <x-app-layout>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <x-slot name="header">
         <h2 class="font-semibold text-heading4 text-gray-800 leading-tight">
@@ -9,15 +8,18 @@
 
     <div class="max-w-9xl mx-40 py-6 px-4 sm:px-6 lg:px-8 mt-[100px]">
 
-        <div class="flex justify-between">
+        <div class="flex justify-between mb-16">
             <div class="w-3/5">
-                <p class="text-heading4 mt-2">Voor <span class="text-yellow">service</span> en <span class="text-yellow">onderhoud</span> van alle <span class="text-yellow">merken</span> bent u bij ons aan het juiste adres!</p>
+                <p class="text-heading4 mt-2">Voor <span class="text-yellow">service</span> en <span
+                        class="text-yellow">onderhoud</span> van alle <span class="text-yellow">merken</span> bent u bij
+                    ons aan het juiste adres!</p>
                 <ul class="list-disc list-inside mt-4 text-heading5">
                     <li>Al ruim 20 jaar in de auto-industrie.</li>
                     <li>Lage kosten betekenen lage prijzen voor u.</li>
                     <li>Onze monteurs hebben meer dan 15 jaar ervaring.</li>
                     <li>RDW erkend.</li>
-                </ul></div>
+                </ul>
+            </div>
             <div class="w-2/5 ml-4">
                 <div class="flex flex-col justify-start">
                     <div class="bg-white rounded-lg shadow-md p-6">
@@ -53,7 +55,7 @@
                             </div>
 
                             <div class="mb-3 flex justify-end">
-                                <a href="{{ route('dashboard') }}" class="m-2 underline">Terug</a>
+                                <a href="{{ route('home') }}" class="m-2 underline">Terug</a>
                                 <x-primary-button class="ms-3">
                                     {{ __('Opslaan') }}
                                 </x-primary-button>
@@ -65,5 +67,5 @@
             </div>
         </div>
     </div>
-
+        <x-footer />
 </x-app-layout>

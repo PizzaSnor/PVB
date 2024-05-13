@@ -2,7 +2,7 @@
     <main>
         <div class="relative">
             <img class="absolute z-0 w-full h-96 object-cover filter brightness-50 " src="{{ URL::asset('/images/autobedrijf.jpg') }}" alt="">
-            <div class="flex flex-col absolute top-0 left-0 w-full h-full flex items-center justify-center z-10">
+            <div class="flex flex-col absolute top-0 left-0 w-full h-full items-center justify-center z-10">
                 <div class="text-white text-center mt-96">
                     <h1 class="text-4xl font-bold">NP-Auto</h1>
                     <p class="mt-4 text-md md:text-lg md:w-1/2 px-4 mx-auto">Altijd al je auto willen verkopen?  Of wil je gewoon een

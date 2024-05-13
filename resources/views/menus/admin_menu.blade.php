@@ -21,6 +21,16 @@
                 <a href="{{ route('dashboard.home.contact') }}" class="btn btn-light btn-block text-decoration-none font-bold text-xl text-gray-800 hover:bg-gray-200 block w-full p-2">Contact gegevens</a>
             </li>
             @endif
+            @if (Auth::user()->isAdmin())
+            <li class="list-group-item">
+                <a href="{{ route('dashboard.home.general') }}" class="btn btn-light btn-block text-decoration-none font-bold text-xl text-gray-800 hover:bg-gray-200 block w-full p-2">Algemene informatie</a>
+            </li>
+            @endif
+            @if (Auth::user()->isAdmin())
+            <li class="list-group-item">
+                <a href="{{ route('dashboard.home.time') }}" class="btn btn-light btn-block text-decoration-none font-bold text-xl text-gray-800 hover:bg-gray-200 block w-full p-2">Openingstijden</a>
+            </li>
+            @endif
             <li class="list-group-item">
                 <form action="{{ route('logout') }}" method="POST" class="inline-block btn btn-light btn-block text-decoration-none font-bold text-xl text-gray-800 hover:bg-gray-200 w-full p-2">
                     @csrf

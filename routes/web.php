@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+
 use App\Http\Controllers\OccasionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +8,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\MechanicMiddleware;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -50,6 +51,10 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
             Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
             Route::put('/contact', [HomeController::class, 'updateContact'])->name('contact.update');
+
+            Route::get('/time', [HomeController::class, 'time'])->name('time');
+            Route::put('/time', [HomeController::class, 'updateTime'])->name('time.update');
+            
         });
     });
     // admin and mechanic

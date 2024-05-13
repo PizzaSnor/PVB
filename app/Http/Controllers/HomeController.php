@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactUpdateRequest;
+use App\Http\Requests\MainInfoUpdateRequest;
+use App\Http\Requests\UpdateTimeRequest;
 use Illuminate\Http\Request;
 use App\Models\SiteInfo;
 use App\Models\Occasion;
+use App\Models\Day;
 
 class HomeController extends Controller
 {
@@ -15,34 +19,69 @@ class HomeController extends Controller
         return view('index', compact('occasions'));
     }
 
-    // public function general()
-    // {
-    //     $landingPageContent = LandingPageContent::firstOrCreate([]);
-    //     return view('home.general', compact('landingPageContent'));
-    // }
+    public function general()
+    {
+        $landingPageContent = SiteInfo::firstOrCreate([]);
+        return view('home.general', compact('landingPageContent'));
+    }
 
-    // public function update(Request $request)
-    // {
-    //     $landingPageContent = LandingPageContent::firstOrCreate([]);
-    //     $landingPageContent->update($request->all());
+    public function update(MainInfoUpdateRequest $request)
+    {
+        $landingPageContent = SiteInfo::firstOrCreate([]);
+        $landingPageContent->update($request->all());
 
-    //     return redirect()->route('dashboard.tasks.index')->with('success', 'Landing page informatie succesvol aangepast');
-    // }
+        return redirect()->route('dashboard.users.index')->with('success', 'Landingspagina informatie succesvol aangepast');
+    }
 
     public function contact()
     {
-        $landingPageContent = SiteInfo::firstOrCreate([]);
-        return view('home.contact', compact('landingPageContent'));
+        $contactInfo = SiteInfo::firstOrCreate([]);
+        return view('home.contact', compact('contactInfo'));
     }
 
-    public function updateContact(Request $request)
+    public function updateContact(ContactUpdateRequest $request)
     {
-        $landingPageContent = SiteInfo::firstOrCreate([]);
-        $landingPageContent->update([
+
+        $contactInfo = SiteInfo::firstOrCreate([]);
+        $contactInfo->update([
             'contact_email' => $request->input('contact_email'),
             'contact_number' => $request->input('contact_number'),
         ]);
 
-        return redirect()->route('dashboard.tasks.index')->with('success', 'Contact informatie succesvol aangepast');
+        return redirect()->route('dashboard.users.index')->with('success', 'Contact informatie succesvol aangepast');
     }
+
+    public function time()
+{
+    $days = Day::all();
+
+    $weekdayNames = [
+        'Maandag',
+        'Dinsdag',
+        'Woensdag',
+        'Donderdag',
+        'Vrijdag',
+        'Zaterdag',
+        'Zondag',
+    ];
+
+    return view('home.time', compact('days', 'weekdayNames'));
+}
+
+
+    public function updateTime(UpdateTimeRequest $request)
+    {
+        foreach ($request->days as $id => $day) {
+            $openingTime = date('Y-m-d H:i:s', strtotime('today ' . $day['opening_time']));
+            $closingTime = date('Y-m-d H:i:s', strtotime('today ' . $day['closing_time']));
+
+            Day::where('id', $id)->update([
+                'opening_time' => $openingTime,
+                'closing_time' => $closingTime
+            ]);
+        }
+
+        return redirect()->route('dashboard.users.index')->with('success', 'Openingstijden zijn bijgewerkt.');
+    }
+    
 }

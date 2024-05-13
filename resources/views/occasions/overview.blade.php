@@ -30,10 +30,8 @@
                                     <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Verkocht</th>
                                     <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Markeer als verkocht</th>
 
-                                    @can('delete')
-                                        <th class="px-4 py-2"></th>
-                                        <th class="px-4 py-2"></th>
-                                    @endcan
+                                    <th class="px-4 py-2"></th>
+                                    <th class="px-4 py-2"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -60,16 +58,18 @@
                                             </td>
                                         @endif
 
-                                        @can('delete')
-                                            <td class="text-right  px-4 py-2">
+                                        <td class="text-right  px-4 py-2">
+                                            @can('delete', $occasion)
                                                 <a class="btn" href="{{ route('dashboard.occasions.edit', $occasion->id) }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                                         <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
                                                     </svg>
                                                 </a>
-                                            </td>
-                                            <td class="text-left px-4 py-2">
-                                                <form action="{{ route('dashboard.occasions.destroy', $occasion->id) }}" method="post" class="inline-block" onsubmit="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?');">
+                                            @endcan
+                                        </td>
+                                        <td class="text-left px-4 py-2">
+                                            @can('delete', $occasion)
+                                                <form action="{{ route('dashboard.occasions.destroy', $occasion->id) }}" method="post" class="inline-block" onsubmit="return confirm('Weet je zeker dat je deze occasion wilt verwijderen?');">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="btn" type="submit">
@@ -78,8 +78,8 @@
                                                         </svg>
                                                     </button>
                                                 </form>
-                                            </td>
-                                        @endcan
+                                            @endcan
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

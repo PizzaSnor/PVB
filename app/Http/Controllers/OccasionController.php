@@ -44,4 +44,12 @@ class OccasionController extends Controller
         return view("occasions.overview", compact('occasions', 'query'));
     }
 
+    public function destroy(Occasion $occasion)
+    {
+        $occasion->images()->delete();
+        $occasion->delete();
+        return redirect(route("dashboard.occasions.index"))->with('success', 'Occasion verwijderd');
+
+    }
+
 }

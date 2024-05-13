@@ -27,4 +27,18 @@ class OccasionController extends Controller
 
         return view('occasions.view', compact('occasion'));
     }
+
+    public function overview(Request $request)
+    {
+        $query = $request->input('query');
+        $occasions = Occasion::all()->orderBy('created_at', 'desc');
+
+        if ($query) {
+            $occasions->where('licence_plate', 'like', "%$query%")->orWhere('brand', 'like', "%$query%");
+        }
+
+        $occasions = $occasions->paginate(10)->withQueryString();
+
+        return view("occasions.overview", compact('occasions', 'query'));
+    }
 }

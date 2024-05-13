@@ -51,6 +51,12 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
             Route::get('/{car}/complete', [ServiceController::class, 'markAsComplete'])->name('complete');
             Route::put('/{car}', [ServiceController::class, 'finish'])->name('finish');
         });
+        Route::prefix('occasions')->name('occasions.')->group(function () {
+            Route::get('/', [OccasionController::class, 'overview'])->name('index');
+            Route::get('/{occasion}', [OccasionController::class, 'edit'])->name('edit');
+            Route::delete('/{occasion}', [OccasionController::class, 'destroy'])->name('destroy');
+            Route::put('/{occasion}', [OccasionController::class, 'sell'])->name('sell');
+        });
     });
 });
 

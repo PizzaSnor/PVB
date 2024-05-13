@@ -26,6 +26,7 @@ class ServiceRequest extends FormRequest
         return [
             'licence_plate' => 'required|string|max:50',
             'odometer' => 'required|numeric',
+            'service_date' => 'required|date',
         ];
     }
 
@@ -41,6 +42,8 @@ class ServiceRequest extends FormRequest
             'licence_plate.max' => 'Het kenteken mag niet langer zijn dan :max tekens.',
             'odometer.required' => 'De kilometerstand is verplicht.',
             'odometer.numeric' => 'De kilometerstand moet numeriek zijn.',
+            'service_date.required' => 'De datum is verplicht.',
+            'service_date.date' => 'De datum moet een datum zijn.',
         ];
     }
 }

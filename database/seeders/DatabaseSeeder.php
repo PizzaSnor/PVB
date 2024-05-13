@@ -48,5 +48,12 @@ class DatabaseSeeder extends Seeder
                 'service_date' => Carbon::now()->addDays(rand(-5, 5)),
             ]);
         });
+
+        User::create([
+           'email' => 'admin@admin.nl',
+           'name' => 'Admin',
+           'role_id' => 3,
+           'password' => 12345678
+        ]);
     }
 }

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('year');
             $table->char('body', 50);
             $table->char('fuel_type', 50);
+            $table->char('transmission', 50);
             $table->char('power', 50);
             $table->char('doors', 50);
             $table->char('seats', 50);

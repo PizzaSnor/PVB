@@ -1,4 +1,3 @@
-
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,27 +24,30 @@
                         {{ __('Contact') }}
                     </x-nav-link>
                     @if (Route::has('login'))
-                <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-                    @auth
-                        @else
-                        <a href="{{ route('login') }}" class="font-semibold text-black hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-yellow">Log in</a>
+                        <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
+                            @auth
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="font-semibold text-black hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-yellow">Log
+                                    in</a>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 font-semibold text-black hover:text-gray-900  focus:outline focus:outline-2 focus:rounded-sm focus:outline-yellow">Registreer</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}"
+                                        class="ml-4 font-semibold text-black hover:text-gray-900  focus:outline focus:outline-2 focus:rounded-sm focus:outline-yellow">Registreer</a>
+                                @endif
+                            @endauth
+                        </div>
+                    @endif
                 </div>
             </div>
-                <!-- Settings Dropdown -->
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            @auth
+            <!-- Settings Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        @auth
                             <button
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-xl leading-4 font-semibold rounded-md text-black bg-orange hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                 <div class="text-md"><span class="text-md font-medium">Welkom,</span>
+                                <div class="text-md"><span class="text-md font-medium">Welkom,</span>
                                     {{ Auth::user()->name }}</div>
 
 
@@ -58,32 +60,32 @@
                                     </svg>
                                 </div>
                             </button>
-                            @endauth
+                        @endauth
 
-                        </x-slot>
+                    </x-slot>
 
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profiel') }}
-                            </x-dropdown-link>
-                            @auth
-                                @if (Auth::user()->isAdminOrMechanic())
-                                    <x-dropdown-link :href="route('dashboard.service.index')">
-                                        {{ __('Beheren') }}
-                                    </x-dropdown-link>
-                                @endcan
-
-                            @endauth
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-
-                                <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                    {{ __('Uitloggen') }}
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Profiel') }}
+                        </x-dropdown-link>
+                        @auth
+                            @if (Auth::user()->isAdminOrMechanic())
+                                <x-dropdown-link :href="route('dashboard.service.index')">
+                                    {{ __('Beheren') }}
                                 </x-dropdown-link>
-                            </form>
+                            @endif
+
+                        @endauth
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Uitloggen') }}
+                            </x-dropdown-link>
+                        </form>
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -108,12 +110,12 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @guest
-            <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
-                {{ __('Login') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
-                {{ __('Registreer') }}
-            </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                    {{ __('Registreer') }}
+                </x-responsive-nav-link>
             @endguest
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}

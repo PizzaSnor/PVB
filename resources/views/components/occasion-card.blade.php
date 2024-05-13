@@ -9,7 +9,7 @@
     <div>
         <div class="flex justify-between my-2">
             <h2 class="text-lg text-ellipsis">{{$occasion->brand . " " . $occasion->model }}</h2>
-            <h2 class="font-bold text-green-500 text-xl">{{$occasion->price}}</h2>
+            <h2 class="font-bold text-green-500 text-xl">€ {{$occasion->price}}</h2>
         </div>
         <div>
             <ul class="flex justify-between text-gray-500">

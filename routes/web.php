@@ -64,7 +64,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
             Route::get('/', [OccasionController::class, 'overview'])->name('index');
             Route::get('/{occasion}', [OccasionController::class, 'edit'])->name('edit');
             Route::delete('/{occasion}', [OccasionController::class, 'destroy'])->name('destroy');
-            Route::put('/{occasion}', [OccasionController::class, 'sell'])->name('sell');
+            Route::get('/{occasion}/sell', [OccasionController::class, 'sell'])->name('sell');
+            Route::put('/{occasion}', [OccasionController::class, 'update'])->name('update');
         });
     });
 });

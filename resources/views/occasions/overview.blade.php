@@ -16,8 +16,8 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex justify-between items-center">
                             <h2 class="text-2xl font-semibold">Occasions</h2>
-                            <form action="{{ route('dashboard.users.index') }}" method="GET" class="flex">
-                                <input type="text" name="query" class="form-input w-48 focus:outline-none focus:ring-0 focus:border-yellow border-yellow" placeholder="Zoek...">
+                            <form action="{{ route('dashboard.occasions.index') }}" method="GET" class="flex">
+                                <input type="text" value="{{$query}}" name="query" class="form-input w-48 focus:outline-none focus:ring-0 focus:border-yellow border-yellow" placeholder="Zoek...">
                                 <button type="submit" class="rounded-s-none rounded-md bg-yellow px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-lime-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Zoeken</button>
                             </form>
                         </div>
@@ -28,8 +28,7 @@
                                     <th class="text-lg px-4 py-2 text-left">Merk en model</th>
                                     <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Kenteken</th>
                                     <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Verkocht</th>
-                                    <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Markeer als verkocht</th>
-
+                                    <th class="px-4 py-2"></th>
                                     <th class="px-4 py-2"></th>
                                     <th class="px-4 py-2"></th>
                                 </tr>
@@ -44,21 +43,23 @@
                                             <td></td>
                                         @else
                                             <td class="hidden md:table-cell  px-4 py-2 text-left">Nee</td>
-                                            <td class="text-right px-4 py-2">
-                                                <a class="btn"
-                                                   href="{{ route('dashboard.occasions.sell', $occasion->id) }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                         class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                              d="m4.5 12.75 6 6 9-13.5" />
-                                                    </svg>
-
-                                                </a>
+                                            <td class="w-fit px-4 py-2">
+                                                <form action="{{ route('dashboard.occasions.sell', $occasion->id) }}" method="get" class="inline-block" onsubmit="return confirm('Weet je zeker dat je deze occasion als verkocht wil markeren?');">
+                                                    @csrf
+                                                    @method('put')
+                                                    <button>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                             class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                  d="m4.5 12.75 6 6 9-13.5" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
                                             </td>
                                         @endif
 
-                                        <td class="text-right  px-4 py-2">
+                                        <td class="w-fit px-4 py-2">
                                             @can('delete', $occasion)
                                                 <a class="btn" href="{{ route('dashboard.occasions.edit', $occasion->id) }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
@@ -67,7 +68,7 @@
                                                 </a>
                                             @endcan
                                         </td>
-                                        <td class="text-left px-4 py-2">
+                                        <td class="w-fit px-4 py-2">
                                             @can('delete', $occasion)
                                                 <form action="{{ route('dashboard.occasions.destroy', $occasion->id) }}" method="post" class="inline-block" onsubmit="return confirm('Weet je zeker dat je deze occasion wilt verwijderen?');">
                                                     @csrf

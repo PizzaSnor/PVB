@@ -30,7 +30,7 @@
                         <li><strong>- Kleur: </strong>{{$occasion->color}}</li>
                         <li><strong>- Motorinhoud: </strong>{{$occasion->cc}}</li>
                         <li><strong>- Aantal cilinders: </strong>{{$occasion->cc}} cc</li>
-                        <li><strong>- Vermogen: </strong>{{$occasion->power}} KW</li>
+                        <li><strong>- Vermogen: </strong>{{$occasion->power}} PK</li>
                     </ul>
                     <div class="bg-black rounded-lg p-4 h-fit flex flex-col gap-y-4 md:w-fit">
                         <h1 class="text-yellow font-bold text-4xl">Interesse?</h1>

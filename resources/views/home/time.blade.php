@@ -17,29 +17,36 @@
                             @csrf
                             @method('PUT')
                             @foreach ($days as $day)
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <div class="mb-3">
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <div class="mb-3">
+                                            <label class="form-label block">
+                                                {{ $weekdayNames[$day->weekday] }}
+                                            </label>
+                                            <input type="time" class="form-control bg-gray-100 border-none w-full"
+                                                name="days[{{ $day->id }}][opening_time]"
+                                                value="{{ old('days.' . $day->id . '.opening_time', $day->opening_time ? \Carbon\Carbon::parse($day->opening_time)->format('H:i') : '') }}">
+                                            @error('days.' . $day->id . '.opening_time')
+                                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                                            @enderror
+                                            <input type="time" class="form-control bg-gray-100 border-none w-full"
+                                                name="days[{{ $day->id }}][closing_time]"
+                                                value="{{ old('days.' . $day->id . '.closing_time', $day->closing_time ? \Carbon\Carbon::parse($day->closing_time)->format('H:i') : '') }}">
+                                            @error('days.' . $day->id . '.closing_time')
+                                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div>
                                         <label class="form-label block">
-                                            {{ $weekdayNames[$day->weekday] }}
+                                            Gesloten
                                         </label>
-                                        <input type="time" class="form-control bg-gray-100 border-none w-full"
-                                            name="days[{{ $day->id }}][opening_time]"
-                                            value="{{ old('days.'.$day->id.'.opening_time', $day->opening_time ? \Carbon\Carbon::parse($day->opening_time)->format('H:i') : '') }}">
-                                        @error('days.' . $day->id . '.opening_time')
-                                            <div class="text-red-500 text-sm">{{ $message }}</div>
-                                        @enderror
-                                        <input type="time" class="form-control bg-gray-100 border-none w-full"
-                                            name="days[{{ $day->id }}][closing_time]"
-                                            value="{{ old('days.'.$day->id.'.closing_time', $day->closing_time ? \Carbon\Carbon::parse($day->closing_time)->format('H:i') : '') }}">
-                                        @error('days.' . $day->id . '.closing_time')
-                                            <div class="text-red-500 text-sm">{{ $message }}</div>
-                                        @enderror
+                                        <input type="checkbox" class="form-checkbox"
+                                            name="days[{{ $day->id }}][closed]" value="1"
+                                            {{ old('days.' . $day->id . '.closed', $day->closed) ? 'checked' : '' }}>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                        
+                            @endforeach
                             <div class="mb-3 flex justify-end">
                                 <a href="{{ route('dashboard.users.index') }}" class="m-2 underline">Terug</a>
                                 <x-primary-button class="ms-3">

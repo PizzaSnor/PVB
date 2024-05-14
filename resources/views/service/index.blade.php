@@ -17,7 +17,7 @@
                         <div class="flex justify-between items-center">
                             <h2 class="text-2xl font-semibold">Service auto's</h2>
                             <form action="{{ route('dashboard.service.index') }}" method="GET" class="flex">
-                                <input type="text" name="query"
+                                <input type="text" name="query" value="{{$query}}"
                                     class="form-input w-48 focus:outline-none focus:ring-0 focus:border-yellow border-yellow"
                                     placeholder="Zoek...">
                                 <button type="submit"

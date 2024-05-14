@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\OccasionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -12,9 +11,7 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/contact', [HomeController::class, 'contactInfo'])->name('contact');
 
 Route::prefix('occasions')->name('occasions.')->group(function () {
     Route::get('/', [OccasionController::class, 'index'])->name('home');
@@ -48,13 +45,10 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::prefix('home')->name('home.')->group(function () {
             Route::get('/general', [HomeController::class, 'general'])->name('general');
             Route::put('/general', [HomeController::class, 'update'])->name('general.update');
-
             Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
             Route::put('/contact', [HomeController::class, 'updateContact'])->name('contact.update');
-
             Route::get('/time', [HomeController::class, 'time'])->name('time');
             Route::put('/time', [HomeController::class, 'updateTime'])->name('time.update');
-            
         });
     });
     // admin and mechanic
@@ -67,7 +61,10 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         });
         Route::prefix('occasions')->name('occasions.')->group(function () {
             Route::get('/', [OccasionController::class, 'overview'])->name('index');
+            Route::get('/create', [OccasionController::class, 'create'])->name('create');
+            Route::post('/create', [OccasionController::class, 'store'])->name('store');
             Route::get('/{occasion}', [OccasionController::class, 'edit'])->name('edit');
+            Route::put('/{occasion}/update', [OccasionController::class, 'update'])->name('update');
             Route::delete('/{occasion}', [OccasionController::class, 'destroy'])->name('destroy');
             Route::put('/{occasion}', [OccasionController::class, 'sell'])->name('sell');
         });

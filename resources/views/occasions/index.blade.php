@@ -12,10 +12,10 @@
                 <h1 class="text-4xl mx-4 text-center my-8">Onze occasions!</h1>
                 <form action="{{ route('occasions.home') }}" method="GET" class="flex">
                     <input type="text" value="{{ $query }}" name="query"
-                           class="form-input w-48 focus:outline-none focus:ring-0 focus:border-yellow border-yellow"
-                           placeholder="Zoek...">
+                        class="form-input w-48 focus:outline-none focus:ring-0 focus:border-yellow border-yellow"
+                        placeholder="Zoek...">
                     <button type="submit"
-                            class="rounded-s-none rounded-md bg-yellow px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-lime-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Zoeken</button>
+                        class="rounded-s-none rounded-md bg-yellow px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-lime-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Zoeken</button>
                 </form>
             </div>
             <div class="flex justify-center flex-col md:flex-row flex-wrap gap-4">

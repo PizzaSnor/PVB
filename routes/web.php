@@ -28,11 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/service/create', [ServiceController::class, 'store'])->name('service.store');
 });
 
-
-Route::get('/service/create', [ServiceController::class, 'createForm'])->name('service.create');
-Route::post('/service/create', [ServiceController::class, 'store'])->name('service.store');
-
-
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::middleware(AdminMiddleware::class, 'auth')->group(function () {
         //admin only
@@ -63,11 +58,11 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::prefix('occasions')->name('occasions.')->group(function () {
             Route::get('/', [OccasionController::class, 'overview'])->name('index');
             Route::get('/create', [OccasionController::class, 'create'])->name('create');
+            Route::put('/{occasion}/sell', [OccasionController::class, 'sell'])->name('sell');
             Route::post('/create', [OccasionController::class, 'store'])->name('store');
             Route::get('/{occasion}', [OccasionController::class, 'edit'])->name('edit');
             Route::put('/{occasion}/update', [OccasionController::class, 'update'])->name('update');
             Route::delete('/{occasion}', [OccasionController::class, 'destroy'])->name('destroy');
-            Route::put('/{occasion}', [OccasionController::class, 'sell'])->name('sell');
         });
     });
 });

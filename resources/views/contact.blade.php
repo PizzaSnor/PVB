@@ -9,7 +9,7 @@
 
         <div class="flex flex-col gap-y-4 my-8">
             <h1 class="text-6xl text-center md:text-left font-bold">Hier kan je ons vinden!</h1>
-            <p class="text-xl text-center md:text-left font-semibold">{{$contactInfo->main_content}}</p>
+            <p class="text-xl text-center md:text-left font-semibold">Niet zo goed in navigeren? Google maps wel! Met deze knop hier onder word je gemakkelijk zo snel mogelijk naar ons toe geleid</p>
             <ul class="text-xl">
                 <li><strong>- Adres:</strong> Muntinglaan 3</li>
                 <li><strong>- Postcode:</strong> 9727 JT</li>
@@ -34,6 +34,8 @@
                     @foreach($days as $day)
                         @if(!$day->closed)
                             <li> {{ \Carbon\Carbon::parse($day->opening_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($day->closing_time)->format('H:i') }} </li>
+                        @else
+                            <li>Gesloten</li>
                         @endif
                     @endforeach
                 </ul>

@@ -11,24 +11,43 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Exception\RequestException;
 use App\Http\Requests\OccasionStoreRequest;
-
-
+use App\Models\Car;
+use Carbon\Carbon;
 
 class OccasionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $occasions = Occasion::orderBy('created_at', 'desc')->paginate(6);
+        $occasions = Occasion::where(function ($query) {
+            $query->where('sold', false)
+                ->orWhere(function ($query) {
+                    $query->where('sold', true)
+                        ->where('show_when_sold', true);
+                });
+        });
 
-        return view('occasions.index', compact('occasions'));
+        $query = $request->input('query');
+
+        if ($query) {
+            $occasions->where('model', 'like', "%$query%")
+                ->orWhere('brand', 'like', "%$query%");
+        }
+
+        $occasions = $occasions->orderBy('created_at', 'desc')
+            ->paginate(6)
+            ->withQueryString();
+
+        return view('occasions.index', compact('occasions', 'query'));
     }
 
 
     public function view($id)
     {
+        $imageId = request()->input('imageId');
+        $siteInfo = SiteInfo::firstOrCreate([]);
         $occasion = Occasion::findOrFail($id);
 
-        return view('occasions.view', compact('occasion'));
+        return view('occasions.view', compact('occasion', 'imageId', 'siteInfo'));
     }
 
     public function create()
@@ -116,21 +135,52 @@ class OccasionController extends Controller
     public function overview(Request $request)
     {
         $query = $request->input('query');
-
+    
         $occasions = Occasion::query();
-
+        $now = Carbon::now();
+    
         if ($query) {
             $occasions->where('licence_plate', 'like', "%$query%")
-                ->orWhere('brand', 'like', "%$query%");
+                ->orWhere('brand', 'like', "%$query%")
+                ->orWhere('model', 'like', "%$query%");
+        }
+    
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortDirection = $request->input('sort_direction', 'desc');
+    
+        if ($sortBy === 'brand' || $sortBy === 'price') {
+            $occasions->orderBy($sortBy, $sortDirection);
+        } else {
+            $occasions->orderBy('created_at', 'desc');
         }
 
+        $soldLastWeek = Occasion::where('sold', true)
+        ->where('sold_date', '>=', $now->copy()->subWeek())
+            ->count();
+
+        $soldLastMonth = Occasion::where('sold', true)
+        ->where('sold_date', '>=', $now->copy()->subMonth())
+            ->count();
+
+        $revenueLastWeek = Occasion::where('sold', true)
+        ->where('sold_date', '>=', $now->copy()->subWeek())
+            ->sum('price');
+
+        $revenueLastMonth = Occasion::where('sold', true)
+        ->where('sold_date', '>=', $now->copy()->subMonth())
+            ->sum('price');
+
+        $totalRevenue = Occasion::where('sold', true)->sum('price');
+
+        $carsInStock = Occasion::where('sold', false)->count();
+    
         $occasions = $occasions->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
 
-        return view("occasions.overview", compact('occasions', 'query'));
+        return view("occasions.overview", compact('occasions', 'query', 'sortBy', 'sortDirection', 'soldLastWeek', 'soldLastMonth', 'revenueLastWeek', 'revenueLastMonth', 'totalRevenue', 'carsInStock'));
     }
-
+    
     public function destroy(Occasion $occasion)
     {
         $occasion->images()->delete();
@@ -141,7 +191,8 @@ class OccasionController extends Controller
     public function sell(Occasion $occasion)
     {
         $occasion->update([
-            'sold' => 1
+            'sold' => 1,
+            'sold_date' => Carbon::now(),
         ]);
 
         return redirect(route("dashboard.occasions.index"))->with('success', 'Occasion als verkocht gemarkeerd');
@@ -223,7 +274,7 @@ class OccasionController extends Controller
                         }
                     }
                 }
-
+                // foto's toevoegen
                 if ($request->hasFile('images')) {
                     foreach ($request->file('images') as $image) {
                         $imageName = $occasion->id . '_' . $image->getClientOriginalName();

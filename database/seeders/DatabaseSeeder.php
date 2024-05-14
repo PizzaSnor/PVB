@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
 
         $users = User::factory()->count(10)->create();
 
-        Occasion::factory()->count(10)->create();
+        Occasion::factory()->count(50)->create();
 
         $cars = Car::factory()->count(10)->create();
 
@@ -47,9 +47,9 @@ class DatabaseSeeder extends Seeder
         });
 
         SiteInfo::create([
-            'main_content' => 'Niet zo goed in navigeren? Google maps wel! Met deze knop hier onder word je gemakkelijk zo snel mogelijk naar ons toe geleid!',
-            'contact_email' => 'Muntinglaan 3',
-            'contact_number' => '9727 JT',
+            'main_content' => 'Altijd al je auto willen verkopen? Of wil je gewoon een simpele onderhoudsbeur?Hier kan het gemakkelijk en snel! Verkoop je auto aan ons zodat wij er winst op kunnen maken! Ook kan je hier gemakkelijk occasions bekijken!',
+            'contact_email' => 'info@np-auto.nl',
+            'contact_number' => '050 12345678',
             'max_cars_per_day' => 5
         ]);
 

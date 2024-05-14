@@ -22,12 +22,12 @@
                             <div class="mb-3 ">
                                 <label for="main_content" class="form-label block">Algemene Informatie</label>
                                 <textarea id="main_content" name="main_content" rows="6"
-                                    class=" form-control prose  bg-gray-100 border-none w-full @error('main_content') is-invalid @enderror">{{ old('main_content', isset($landingPageContent) ? $landingPageContent->main_content : '') }}</textarea>
+                                    class="form-control prose  bg-gray-100 border-none w-full @error('main_content') is-invalid @enderror">{{ old('main_content', isset($contactInfo) ? $contactInfo->main_content : '') }}</textarea>
                                 @error('main_content')
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
-                        
+
                             <div class="mb-3 flex justify-end">
                                 <a href="{{ route('dashboard.users.index') }}" class="m-2 underline">Terug</a>
                                 <x-primary-button class="ms-3">
@@ -40,6 +40,4 @@
             </div>
         </div>
     </div>
-
-    
 </x-app-layout>

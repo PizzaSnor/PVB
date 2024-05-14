@@ -14,9 +14,17 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $occasions = Occasion::latest()->take(3)->get();
+        $occasions = Occasion::where(function ($query) {
+            $query->where('sold', false)
+                ->orWhere(function ($query) {
+                    $query->where('sold', true)
+                        ->where('show_when_sold', true);
+                });
+        })->latest()->take(3)->get();
 
-        return view('index', compact('occasions'));
+        $info = SiteInfo::firstOrCreate([]);
+
+        return view('index', compact('occasions', 'info'));
     }
 
     public function general()
@@ -37,9 +45,8 @@ class HomeController extends Controller
 
     public function contactInfo()
     {
-        $contactInfo = SiteInfo::firstOrCreate([]);
         $days = Day::all();
-        return view('contact', compact('contactInfo', 'days'));
+        return view('contact', compact('days'));
     }
 
     public function contact()

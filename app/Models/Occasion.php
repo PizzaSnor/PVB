@@ -21,6 +21,7 @@ class Occasion extends Model
         'licence_plate',
         'odometer',
         'sold',
+        'sold_date', 
         'show_when_sold',
         'brand',
         'model',

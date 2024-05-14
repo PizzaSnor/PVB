@@ -21,14 +21,16 @@ class OccasionFactory extends Factory
      */
     public function definition()
     {
+        $sold = $this->faker->boolean;
+        $sold_date = $sold ? $this->faker->dateTimeBetween('-4 month', now()) : NULL;
         return [
             'title' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'price' => $this->faker->numberBetween(1000, 20000),
             'licence_plate' => $this->faker->unique()->regexify('[A-Z]{2}-\d{2}-\d{2}'),
             'odometer' => $this->faker->numberBetween(10000, 200000),
-            'sold' => $this->faker->boolean,
-            'show_when_sold' => $this->faker->boolean,
+            'sold' => $sold,
+            'sold_date' => $sold_date, 
             'brand' => $this->faker->word,
             'model' => $this->faker->word,
             'color' => $this->faker->safeColorName,

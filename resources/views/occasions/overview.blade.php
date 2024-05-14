@@ -39,6 +39,33 @@
                                         <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Kenteken</th>
                                         <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Verkocht</th>
                                         <th class="px-4 py-2"></th>
+
+                                        <th class="text-lg px-4 py-2 text-left">
+                                            <a
+                                                href="{{ route('dashboard.occasions.index', ['sort_by' => 'brand', 'sort_direction' => $sortBy === 'brand' && $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                                Brand
+                                                @if ($sortBy === 'brand')
+                                                    @if ($sortDirection === 'asc')
+                                                        <i class="fas fa-sort-up"></i>
+                                                    @else
+                                                        <i class="fas fa-sort-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="text-lg px-4 py-2 text-left">
+                                            <a
+                                                href="{{ route('dashboard.occasions.index', ['sort_by' => 'price', 'sort_direction' => $sortBy === 'price' && $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                                Price
+                                                @if ($sortBy === 'price')
+                                                    @if ($sortDirection === 'asc')
+                                                        <i class="fas fa-sort-up"></i>
+                                                    @else
+                                                        <i class="fas fa-sort-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
                                         <th class="px-4 py-2"></th>
                                         <th class="px-4 py-2"></th>
                                     </tr>
@@ -58,7 +85,7 @@
                                                 <td class="w-fit px-4 py-2">
                                                     <form
                                                         action="{{ route('dashboard.occasions.sell', $occasion->id) }}"
-                                                        method="get" class="inline-block"
+                                                        method="post" class="inline-block"
                                                         onsubmit="return confirm('Weet je zeker dat je deze occasion als verkocht wil markeren?');">
                                                         @csrf
                                                         @method('put')
@@ -73,6 +100,8 @@
                                                     </form>
                                                 </td>
                                             @endif
+                                            <td class="hidden md:table-cell px-4 py-2 text-left"></td>
+                                            <td class="hidden md:table-cell px-4 py-2 text-left"></td>
 
                                             <td class="w-fit px-4 py-2">
                                                 @can('delete', $occasion)
@@ -87,6 +116,7 @@
                                                     </a>
                                                 @endcan
                                             </td>
+
                                             <td class="w-fit px-4 py-2">
                                                 @can('delete', $occasion)
                                                     <form
@@ -114,17 +144,50 @@
                                         </tr>
                                     @endforelse
                                 </tbody>
-
                             </table>
                         </div>
                         <div class="card-footer">
                             {{ $occasions->links('pagination::tailwind') }}
                         </div>
+                        
                     </div>
                 </div>
             </div>
+            
         </div>
-    </div>
+        <div class="flex mt-8 gap-x-4 items-stretch">
+            <div class="w-1/4">
+                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                    <h2 class="text-2xl font-semibold mb-4">Verkochte auto's (Afgelopen week)</h2>
+                    <p><strong>Aantal:</strong> {{ $soldLastWeek }}</p>
+                    <p><strong>Omzet:</strong> €{{ number_format($revenueLastWeek, 2) }}</p>
+                </div>
+            </div>
+        
+            <div class="w-1/4">
+                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                    <h2 class="text-2xl font-semibold mb-4">Verkochte auto's (Afgelopen maand)</h2>
+                    <p><strong>Aantal:</strong> {{ $soldLastMonth }}</p>
+                    <p><strong>Omzet:</strong> €{{ number_format($revenueLastMonth, 2) }}</p>
+                </div>
+            </div>
+        
+            <div class="w-1/4">
+                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                    <h2 class="text-2xl font-semibold mb-4">Totale omzet (Allertijde)</h2>
+                    <p><strong>Omzet:</strong> €{{ number_format($totalRevenue, 2) }}</p>
+                </div>
+            </div>
+        
+            <div class="w-1/4">
+                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                    <h2 class="text-2xl font-semibold mb-4">Auto's op voorraad</h2>
+                    <p><strong>Aantal:</strong> {{ $carsInStock }}</p>
+                </div>
+            </div>
+        </div>
+        
+            </div>
 </x-app-layout>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

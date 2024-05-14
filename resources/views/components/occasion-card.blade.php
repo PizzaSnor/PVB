@@ -3,7 +3,7 @@
             @if($occasion->images->isNotEmpty())
                 <img class="w-80 h-40 object-cover absolute rounded-md" src="{{ asset('images/' . $occasion->images[0]->path) }}" alt="Occasion image">
             @else
-                <img class="w-80 h-40 object-cover absolute rounded-md" src="{{ URL::asset('images/carPlaceholder.png')}}" alt="Occasion placeholder image">
+                <img class="w-80 h-40 object-cover absolute rounded-md" src="{{ asset('images/carPlaceholder.png')}}" alt="Occasion placeholder image">
             @endif
             @if($occasion->sold && $occasion->show_when_sold)
                 <div class="z-10 absolute bg-yellow w-96 top-10 -left-10 py-4 text-center text-4xl font-bold transform rotate-12">
@@ -14,7 +14,7 @@
         <div>
             <div class="flex justify-between my-2">
                 <h2 class="text-lg text-ellipsis">{{$occasion->brand . " " . $occasion->model }}</h2>
-                <h2 class="font-bold text-green-500 text-xl">€ {{$occasion->price}}</h2>
+                <h2 class="font-bold text-green-500 text-xl">€ {{ number_format($occasion->price, 0, '', '.') }}</h2>
             </div>
             <div>
                 <ul class="flex justify-between text-gray-500">

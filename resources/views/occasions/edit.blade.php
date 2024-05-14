@@ -38,7 +38,7 @@
                                     <label for="price" class="form-label block">Prijs</label>
                                     <input type="text"
                                         class="form-control bg-gray-100 border-none w-full focus:outline-yellow focus:ring-0 focus:border-yellow @error('price') is-invalid @enderror"
-                                        id="price" name="price" value="{{ old('price', $occasion->price) }}">
+                                        id="price" name="price" value="{{ old('price', number_format($occasion->price, 0, '', '.')) }}">
                                     @error('price')
                                         <div class="text-red-500">{{ $message }}</div>
                                     @enderror

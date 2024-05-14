@@ -12,9 +12,7 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/contact', [HomeController::class, 'contactInfo'])->name('contact');
 
 Route::prefix('occasions')->name('occasions.')->group(function () {
     Route::get('/', [OccasionController::class, 'index'])->name('home');

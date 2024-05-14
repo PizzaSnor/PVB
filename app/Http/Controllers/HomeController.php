@@ -21,8 +21,10 @@ class HomeController extends Controller
 
     public function general()
     {
-        $landingPageContent = SiteInfo::firstOrCreate([]);
-        return view('home.general', compact('landingPageContent'));
+        $contactInfo = SiteInfo::firstOrCreate([]);
+        $days = Day::all();
+
+        return view('home.general', compact('contactInfo', 'days'));
     }
 
     public function update(MainInfoUpdateRequest $request)
@@ -31,6 +33,13 @@ class HomeController extends Controller
         $landingPageContent->update($request->all());
 
         return redirect()->route('dashboard.users.index')->with('success', 'Landingspagina informatie succesvol aangepast');
+    }
+
+    public function contactInfo()
+    {
+        $contactInfo = SiteInfo::firstOrCreate([]);
+        $days = Day::all();
+        return view('contact', compact('contactInfo', 'days'));
     }
 
     public function contact()
@@ -88,5 +97,5 @@ class HomeController extends Controller
 
         return redirect()->route('dashboard.users.index')->with('success', 'Openingstijden zijn bijgewerkt.');
     }
-    
+
 }

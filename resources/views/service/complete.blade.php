@@ -3,7 +3,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-heading4 text-gray-800 leading-tight">
-            {{ __($car->licence_plate. 'afronden') }}
+            {{ __($car->licence_plate. ' afronden') }}
         </h2>
     </x-slot>
 

@@ -88,6 +88,5 @@ class HomeController extends Controller
 
         return redirect()->route('dashboard.users.index')->with('success', 'Openingstijden zijn bijgewerkt.');
     }
-
     
 }

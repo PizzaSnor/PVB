@@ -128,50 +128,44 @@
 </x-app-layout>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Add event listener to sold checkboxes
+        //deze is voor sold
         document.querySelectorAll('.sold-checkbox').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
                 const occasionId = this.getAttribute('data-id');
                 const isChecked = this.checked;
-                // Send AJAX request to update the sold status
-                updateOccasion(occasionId, { sold: isChecked });
+                updateOccasion(occasionId, {
+                    sold: isChecked
+                });
             });
         });
-
-        // Add event listener to show when sold checkboxes
+        // deze is voor sold when show
         document.querySelectorAll('.show-when-sold-checkbox').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
                 const occasionId = this.getAttribute('data-id');
                 const isChecked = this.checked;
-                // Send AJAX request to update the show when sold status
-                updateOccasion(occasionId, { show_when_sold: isChecked });
+                updateOccasion(occasionId, {
+                    show_when_sold: isChecked
+                });
             });
         });
 
-        // Function to send AJAX request to update occasion
+        // fetchen van de data en versturen naar de juiste functie
         function updateOccasion(occasionId, data) {
             fetch(`/dashboard/occasions/${occasionId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Handle success response
-                console.log(data);
-            })
-            .catch(error => {
-                // Handle error
-                console.error('There was an error!', error);
-            });
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network error opgetreden.');
+                    }
+                    return response.json();
+                })
         }
     });
 </script>

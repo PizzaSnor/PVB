@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-y-4 mb-4">
     @if($occasion->images->isNotEmpty())
-        @if(!isset($imageId))
+        @if(!isset($occasion->images[$imageId]))
             <img class="w-full h-96 object-cover rounded-lg shadow-md" src="{{ asset('images/' . $occasion->images[0]->path) }}" alt="Occasion image">
         @else
             <img class="w-full h-96 object-cover rounded-lg shadow-md" src="{{ asset('images/' . $occasion->images[$imageId]->path) }}" alt="Occasion image">

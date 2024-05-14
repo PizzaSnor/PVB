@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="xl:mx-80">
         <div class="py-4">
-            <a href="{{ route('occasions.home') }}">
+            <a href="{{ route('occasions.home') }}" class="ml-4 md:ml-0">
                 <x-yellow-button content="Terug" />
             </a>
         </div>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="flex flex-col gap-y-2">
                     <h2 class="text-2xl">{{ $occasion->title }}</h2>
-                    <p>{{ $occasion->description }}</p>
+                    <p class="max-w-full break-all">{{ $occasion->description }}</p>
                 </div>
                 <div class="flex flex-col gap-y-4 md:flex-row justify-between">
                     <ul class="text-lg flex flex-col flex-wrap">
@@ -40,7 +40,7 @@
                     <div class="bg-black rounded-lg p-4 h-fit flex flex-col gap-y-4 md:w-fit">
                         <h1 class="text-yellow font-bold text-4xl">Interesse?</h1>
                         <p class="bg-white px-4 py-2 font-bold text-center rounded-lg">{{ $siteInfo->contact_number }}</p>
-                        <p class="bg-white px-4 py-2 font-bold text-center rounded-lg">{{ $siteInfo->contact_email }}</p>
+                        <a href="mailto:{{ $siteInfo->contact_email }}" class="bg-white px-4 py-2 font-bold text-center rounded-lg">{{ $siteInfo->contact_email }}</a>
                     </div>
                 </div>
             </div>

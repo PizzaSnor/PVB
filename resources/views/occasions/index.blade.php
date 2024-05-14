@@ -1,8 +1,8 @@
 <x-app-layout>
-    <div>
-        
+    <div @class(['h-[calc(100vh-15rem)]' => count($occasions) <= 4])>
         <div class="flex flex-col items-center xl:mx-64">
-            <div class="flex items-center justify-between">
+
+            <div class="flex items-center flex-col md:flex-row mb-4 justify-between">
                 <h1 class="text-4xl mx-4 text-center my-8">Onze occasions!</h1>
                 <form action="{{ route('occasions.home') }}" method="GET" class="flex">
                     <input type="text" value="{{ $query }}" name="query"
@@ -26,10 +26,5 @@
             {{ $occasions->links() }}
         </div>
     </div>
-    <div @class([
-    'mt-10',
-    'lg:mt-96' => count($occasions) <= 3
-    ])>
-        <x-footer />
-    </div>
+    <x-footer />
 </x-app-layout>

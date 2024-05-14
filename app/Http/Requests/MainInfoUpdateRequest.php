@@ -25,6 +25,7 @@ class MainInfoUpdateRequest extends FormRequest
     {
         return [
             'main_content' => 'required',
+            'max_cars_per_day' => 'required|numeric|max:10|min:1',
         ];
     }
 
@@ -37,6 +38,10 @@ class MainInfoUpdateRequest extends FormRequest
     {
         return [
             'main_content.required' => 'Algemene informatie is verplicht.',
+            'max_cars_per_day.required' => 'Het maximale aantal auto\'s per dag is verplicht.',
+            'max_cars_per_day.numeric' => 'Het maximale aantal auto\'s per dag moet numeriek zijn.',
+            'max_cars_per_day.max' => 'Het maximale aantal auto\'s per dag mag niet langer zijn dan :max tekens.',
+            'max_cars_per_day.min' => 'Het maximale aantal auto\'s per dag moet minimaal :min tekens zijn.',
         ];
     }
 }

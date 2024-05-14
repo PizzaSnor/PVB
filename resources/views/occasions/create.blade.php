@@ -102,8 +102,14 @@
                             </div>
                             <div class="mb-3 d-flex flex-column">
                                 <label for="images" class="form-label">Afbeelding(en) toevoegen</label>
-                                <input type="file" name="images[]" multiple accept="image/*">
+                                <input type="file" name="images[]" multiple accept="image/*" class="@error('images') is-invalid @enderror">
+                                @error('images')
+                                    @foreach ($errors->get('images') as $error)
+                                        <div class="text-red-500">{{ $error }}</div>
+                                    @endforeach
+                                @enderror
                             </div>
+                            
 
                             <div class="mb-3 flex justify-end">
                                 <a href="{{ route('dashboard.occasions.index') }}" class="m-2 underline">Terug</a>

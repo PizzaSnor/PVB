@@ -34,22 +34,22 @@ class ServiceController extends Controller
             $rdwData = json_decode($response->getBody(), true);
 
             if (!empty($rdwData)) {
-                $year = substr($rdwData[0]['datum_eerste_toelating'], 0, 4);
+                $year = substr($rdwData[0]['datum_eerste_toelating'], 0, 4) ?? 'N/A';
     
                 $carDetails = [
                     'user_id' => auth()->id(),
                     'licence_plate' => $licencePlate,
-                    'brand' => $rdwData[0]['merk'],
-                    'model' => $rdwData[0]['handelsbenaming'],
-                    'color' => $rdwData[0]['eerste_kleur'],
+                    'brand' => $rdwData[0]['merk'] ?? 'N/A',
+                    'model' => $rdwData[0]['handelsbenaming'] ?? 'N/A',
+                    'color' => $rdwData[0]['eerste_kleur'] ?? 'N/A',
                     'year' => $year,
-                    'body' => $rdwData[0]['inrichting'],
+                    'body' => $rdwData[0]['inrichting'] ?? 'N/A',
                     'power' => $rdwData[0]['vermogen_motor_pk'] ?? "N/A",
-                    'doors' => $rdwData[0]['aantal_deuren'],
-                    'seats' => $rdwData[0]['aantal_zitplaatsen'],
-                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt'],
+                    'doors' => $rdwData[0]['aantal_deuren'] ?? 'N/A',
+                    'seats' => $rdwData[0]['aantal_zitplaatsen'] ?? 'N/A',
+                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt'] ?? '2025-04-11 00:00:00',
                     'cc' => $rdwData[0]['cilinderinhoud'] ?? "N/A",
-                    'weight' => $rdwData[0]['massa_ledig_voertuig'],
+                    'weight' => $rdwData[0]['massa_ledig_voertuig'] ?? 'N/A',
                     'tax' => $rdwData[0]['bruto_bpm'] ?? "N/A",
                 ];
                 $carDetails['odometer'] = $request->input('odometer');
@@ -60,11 +60,15 @@ class ServiceController extends Controller
     
                 if (!empty($fuelData)) {
                     $carDetails['fuel_efficiency'] = $fuelData[0]['brandstofverbruik_gecombineerd'] ?? "N/A";
-                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'];
+                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'] ?? 'N/A';
                 }
 
 
                 $serviceDate = $request->input('service_date');
+
+                if (strtotime($serviceDate) < strtotime(date('Y-m-d'))) {
+                    return back()->with(['error' => 'Je kunt geen afspraak in het verleden maken.'])->withInput();
+                }
                 $plannedAppointmentsCount = PlannedService::whereDate('service_date', $serviceDate)->count();
 
                 if ($plannedAppointmentsCount >= $maxCarsPerDay) {

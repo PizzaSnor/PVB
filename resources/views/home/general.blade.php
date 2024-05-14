@@ -27,6 +27,15 @@
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="max_cars_per_day" class="form-label block">Maximaal aantal auto's per dag <i>( vanaf nu geplande service auto's )</i></label>
+                                <input type="number"
+                                    class="form-control bg-gray-100 border-none w-full focus:outline-yellow focus:ring-0 focus:border-yellow @error('max_cars_per_day') is-invalid @enderror"
+                                    id="max_cars_per_day" name="max_cars_per_day" value="{{ old('max_cars_per_day', isset($contactInfo) ? $contactInfo->max_cars_per_day : '') }}">
+                                @error('max_cars_per_day')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </div>
 
                             <div class="mb-3 flex justify-end">
                                 <a href="{{ route('dashboard.users.index') }}" class="m-2 underline">Terug</a>

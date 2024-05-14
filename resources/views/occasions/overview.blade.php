@@ -160,7 +160,7 @@
                 <div class="bg-white rounded-lg shadow-md p-6 h-full">
                     <h2 class="text-2xl font-semibold mb-4">Verkochte auto's (Afgelopen week)</h2>
                     <p><strong>Aantal:</strong> {{ $soldLastWeek }}</p>
-                    <p><strong>Omzet:</strong> €{{ number_format($revenueLastWeek, 2) }}</p>
+                    <p><strong>Omzet:</strong> €{{ number_format($revenueLastWeek, 0, '', '.') }}</p>
                 </div>
             </div>
         
@@ -168,14 +168,14 @@
                 <div class="bg-white rounded-lg shadow-md p-6 h-full">
                     <h2 class="text-2xl font-semibold mb-4">Verkochte auto's (Afgelopen maand)</h2>
                     <p><strong>Aantal:</strong> {{ $soldLastMonth }}</p>
-                    <p><strong>Omzet:</strong> €{{ number_format($revenueLastMonth, 2) }}</p>
+                    <p><strong>Omzet:</strong> €{{ number_format($revenueLastMonth, 0, '', '.') }}</p>
                 </div>
             </div>
         
             <div class="w-1/4">
                 <div class="bg-white rounded-lg shadow-md p-6 h-full">
                     <h2 class="text-2xl font-semibold mb-4">Totale omzet (Allertijde)</h2>
-                    <p><strong>Omzet:</strong> €{{ number_format($totalRevenue, 2) }}</p>
+                    <p><strong>Omzet:</strong> €{{ number_format($totalRevenue, 0, '', '.')}}</p>
                 </div>
             </div>
         

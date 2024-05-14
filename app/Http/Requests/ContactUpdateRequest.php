@@ -24,8 +24,8 @@ class ContactUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_email' => 'required|email',
-            'contact_number' => 'required|numeric',
+            'contact_email' => 'required|email|max:100',
+            'contact_number' => 'required|numeric|max:50',
         ];
     }
 
@@ -38,9 +38,11 @@ class ContactUpdateRequest extends FormRequest
     {
         return [
             'contact_email.required' => 'Het contact e-mailadres is verplicht',
+            'contact_email.max' => 'Het contact e-mailadres mag niet langer zijn dan :max tekens',
             'contact_email.email' => 'Het contact e-mailadres moet een geldig e-mailadres zijn',
             'contact_number.required' => 'Het contact telefoonnummer is verplicht',
             'contact_number.numeric' => 'Het contact telefoonnummer moet een nummer zijn',
+            'contact_number.max' => 'Het contact telefoonnummer mag niet langer zijn dan :max tekens',
         ];
     }
 }

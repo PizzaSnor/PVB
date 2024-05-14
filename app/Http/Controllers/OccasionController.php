@@ -78,18 +78,18 @@ class OccasionController extends Controller
 
                 $carDetails = [
                     'licence_plate' => $licencePlate,
-                    'brand' => $rdwData[0]['merk'],
-                    'model' => $rdwData[0]['handelsbenaming'],
-                    'color' => $rdwData[0]['eerste_kleur'],
+                    'brand' => $rdwData[0]['merk'] ?? 'N/A',
+                    'model' => $rdwData[0]['handelsbenaming'] ?? 'N/A',
+                    'color' => $rdwData[0]['eerste_kleur'] ?? 'N/A',
                     'year' => $year,
-                    'body' => $rdwData[0]['inrichting'],
+                    'body' => $rdwData[0]['inrichting'] ?? 'N/A',
                     'power' => $power,
                     'transmission' => $transmission,
-                    'doors' => $rdwData[0]['aantal_deuren'],
-                    'seats' => $rdwData[0]['aantal_zitplaatsen'],
-                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt'],
+                    'doors' => $rdwData[0]['aantal_deuren'] ?? 'N/A',
+                    'seats' => $rdwData[0]['aantal_zitplaatsen'] ?? 'N/A',
+                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt'] ?? 'N/A',
                     'cc' => $rdwData[0]['cilinderinhoud'] ?? "N/A",
-                    'weight' => $rdwData[0]['massa_ledig_voertuig'],
+                    'weight' => $rdwData[0]['massa_ledig_voertuig'] ?? 'N/A',
                     'tax' => $rdwData[0]['bruto_bpm'] ?? "N/A",
                     'title' => $title,
                     'description' => $description,
@@ -104,7 +104,7 @@ class OccasionController extends Controller
 
                 if (!empty($fuelData)) {
                     $carDetails['fuel_efficiency'] = $fuelData[0]['brandstofverbruik_gecombineerd'] ?? "N/A";
-                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'];
+                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'] ?? 'N/A';
                 }
 
                 $occasion = new Occasion();
@@ -226,18 +226,18 @@ class OccasionController extends Controller
 
                 $carDetails = [
                     'licence_plate' => $licencePlate,
-                    'brand' => $rdwData[0]['merk'],
-                    'model' => $rdwData[0]['handelsbenaming'],
-                    'color' => $rdwData[0]['eerste_kleur'],
+                    'brand' => $rdwData[0]['merk']?? 'N/A',
+                    'model' => $rdwData[0]['handelsbenaming']?? 'N/A',
+                    'color' => $rdwData[0]['eerste_kleur']?? 'N/A',
                     'year' => $year,
-                    'body' => $rdwData[0]['inrichting'],
+                    'body' => $rdwData[0]['inrichting']?? 'N/A',
                     'power' => $power,
                     'transmission' => $transmission,
-                    'doors' => $rdwData[0]['aantal_deuren'],
-                    'seats' => $rdwData[0]['aantal_zitplaatsen'],
-                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt'],
+                    'doors' => $rdwData[0]['aantal_deuren']?? 'N/A',
+                    'seats' => $rdwData[0]['aantal_zitplaatsen']?? 'N/A',
+                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt']?? 'N/A',
                     'cc' => $rdwData[0]['cilinderinhoud'] ?? "N/A",
-                    'weight' => $rdwData[0]['massa_ledig_voertuig'],
+                    'weight' => $rdwData[0]['massa_ledig_voertuig']?? 'N/A',
                     'tax' => $rdwData[0]['bruto_bpm'] ?? "N/A",
                     'title' => $title,
                     'description' => $description,
@@ -252,7 +252,7 @@ class OccasionController extends Controller
 
                 if (!empty($fuelData)) {
                     $carDetails['fuel_efficiency'] = $fuelData[0]['brandstofverbruik_gecombineerd'] ?? "N/A";
-                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'];
+                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving']?? 'N/A';
                 }
 
                 $occasion->update($carDetails);

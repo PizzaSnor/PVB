@@ -18,10 +18,11 @@ class OccasionController extends Controller
 {
     public function index()
     {
-        $occasions = Occasion::paginate(6);
+        $occasions = Occasion::orderBy('created_at', 'desc')->paginate(6);
 
         return view('occasions.index', compact('occasions'));
     }
+
 
     public function view($id)
     {

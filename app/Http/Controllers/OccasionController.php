@@ -16,6 +16,15 @@ use Carbon\Carbon;
 
 class OccasionController extends Controller
 {
+
+    /**
+     * Returns a view with all visible occasions with a search query
+     *
+     * Visible cars are cars that are not yet sold or that are sold but where show_when_sold is 1 in the database
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function index(Request $request)
     {
         $occasions = Occasion::where(function ($query) {
@@ -41,6 +50,14 @@ class OccasionController extends Controller
     }
 
 
+    /**
+     * Returns the detailpage of an occasion.
+     *
+     * with the selected image and extra site info for contact information
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function view($id)
     {
         $imageId = request()->input('imageId');
@@ -50,12 +67,29 @@ class OccasionController extends Controller
         return view('occasions.view', compact('occasion', 'imageId', 'siteInfo'));
     }
 
+
+    /**
+     * Returns a view to the creation page of an occasion
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function create()
     {
         $occasions = Occasion::get();
         return view('occasions.create', compact('occasions'));
     }
 
+
+    /**
+     * Stores an occasion an returns an error if necessary
+     *
+     * if everything is correct it returns you to the overview page.
+     * Also gets all information of the RDW API if the licence plate is changed
+     *
+     * @param OccasionStoreRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function store(OccasionStoreRequest $request)
     {
         $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));
@@ -132,22 +166,28 @@ class OccasionController extends Controller
         }
     }
 
+    /**
+     * Returns the view with search request of the Occasion overview page
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function overview(Request $request)
     {
         $query = $request->input('query');
-    
+
         $occasions = Occasion::query();
         $now = Carbon::now();
-    
+
         if ($query) {
             $occasions->where('licence_plate', 'like', "%$query%")
                 ->orWhere('brand', 'like', "%$query%")
                 ->orWhere('model', 'like', "%$query%");
         }
-    
+
         $sortBy = $request->input('sort_by', 'created_at');
         $sortDirection = $request->input('sort_direction', 'desc');
-    
+
         if ($sortBy === 'brand' || $sortBy === 'price') {
             $occasions->orderBy($sortBy, $sortDirection);
         } else {
@@ -173,14 +213,20 @@ class OccasionController extends Controller
         $totalRevenue = Occasion::where('sold', true)->sum('price');
 
         $carsInStock = Occasion::where('sold', false)->count();
-    
+
         $occasions = $occasions->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
 
         return view("occasions.overview", compact('occasions', 'query', 'sortBy', 'sortDirection', 'soldLastWeek', 'soldLastMonth', 'revenueLastWeek', 'revenueLastMonth', 'totalRevenue', 'carsInStock'));
     }
-    
+
+    /**
+     * Deletes an occasion from the database
+     *
+     * @param Occasion $occasion
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function destroy(Occasion $occasion)
     {
         $occasion->images()->delete();
@@ -188,6 +234,12 @@ class OccasionController extends Controller
         return redirect(route("dashboard.occasions.index"))->with('success', 'Occasion verwijderd');
     }
 
+    /**
+     * Marks an occasion as sold
+     *
+     * @param Occasion $occasion
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function sell(Occasion $occasion)
     {
         $occasion->update([
@@ -198,11 +250,19 @@ class OccasionController extends Controller
         return redirect(route("dashboard.occasions.index"))->with('success', 'Occasion als verkocht gemarkeerd');
     }
 
+    /**
+     * Returns the edit view for a speceific occasion page
+     *
+     * @param Occasion $occasion
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function edit(Occasion $occasion)
     {
         return view("occasions.edit", compact('occasion'));
     }
 
+
+    
     public function update(Occasion $occasion, OccasionStoreRequest $request)
     {
         $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));

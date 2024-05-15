@@ -15,19 +15,32 @@ use GuzzleHttp\Client;
 
 class ServiceController extends Controller
 {
-
+    /**
+     * Simply redirects you to the form to apply a car for service
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function createForm()
     {
         return view('service.form');
     }
 
+    /**
+     * Stores the data from a service form in the DB
+     *
+     * Gets additional info from the RDW API, returns an error if something is not right
+     *
+     * @param ServiceRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function store(ServiceRequest $request)
     {
         $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));
         $licencePlate = $request->input('licence_plate');
         $maxCarsPerDay = SiteInfo::first()->max_cars_per_day;
         $client = new Client();
-    
+
         try {
 
             $response = $client->get("https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=$licencePlateStripped");
@@ -35,7 +48,7 @@ class ServiceController extends Controller
 
             if (!empty($rdwData)) {
                 $year = substr($rdwData[0]['datum_eerste_toelating'], 0, 4) ?? 'N/A';
-    
+
                 $carDetails = [
                     'user_id' => auth()->id(),
                     'licence_plate' => $licencePlate,
@@ -57,7 +70,7 @@ class ServiceController extends Controller
 
                 $response = $client->get("https://opendata.rdw.nl/resource/8ys7-d773.json?kenteken=$licencePlateStripped");
                 $fuelData = json_decode($response->getBody(), true);
-    
+
                 if (!empty($fuelData)) {
                     $carDetails['fuel_efficiency'] = $fuelData[0]['brandstofverbruik_gecombineerd'] ?? "N/A";
                     $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'] ?? 'N/A';
@@ -92,7 +105,7 @@ class ServiceController extends Controller
             return back()->with(['error' => 'Kan auto gegevens niet ophalen van de RDW API.'])->withInput();
         }
     }
-    
+
     /**
      * Returns the view of the cars table overview
      *
@@ -125,6 +138,13 @@ class ServiceController extends Controller
         return view('service.complete', compact('car'));
     }
 
+    /**
+     * Completes a cars planned service with a description
+     *
+     * @param Request $request
+     * @param Car $car
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function finish(Request $request, Car $car)
     {
         $messages = [

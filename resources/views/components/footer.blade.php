@@ -3,4 +3,5 @@
     <p class="text-white font-semibold text-2xl md:w-2/5">Heb je vragen? Neem contact met ons op! Of ga naar de contact pagina</p>
     <a href="{{route('contact')}}">
         <x-yellow-button content="Contact"/>
-    </a></footer>
+    </a>
+</footer>

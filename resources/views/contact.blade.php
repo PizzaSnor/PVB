@@ -42,5 +42,5 @@
             </div>
         </div>
     </div>
-    <x-footer />
+    <x-contact-footer :contactInfo="$contactInfo" />
 </x-app-layout>

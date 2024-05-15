@@ -46,7 +46,8 @@ class HomeController extends Controller
     public function contactInfo()
     {
         $days = Day::all();
-        return view('contact', compact('days'));
+        $contactInfo = SiteInfo::firstOrCreate([]);
+        return view('contact', compact('days', 'contactInfo'));
     }
 
     public function contact()

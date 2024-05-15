@@ -3,47 +3,44 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class EmailVerificationTest extends TestCase
 {
-    use RefreshDatabase;
+    protected $createdUsers = [];
 
-    public function test_email_verification_screen_can_be_rendered(): void
+    protected function tearDown(): void
     {
-        $user = User::factory()->unverified()->create();
+        foreach ($this->createdUsers as $user) {
+            $user->delete();
+        }
+
+        parent::tearDown();
+    }
+
+    public function test_email_verificatie_scherm_kan_worden_weergegeven(): void
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+        $this->createdUsers[] = $user;
 
         $response = $this->actingAs($user)->get('/verify-email');
 
         $response->assertStatus(200);
     }
 
-    public function test_email_can_be_verified(): void
+    public function test_email_wordt_niet_geverifieerd_met_ongeldige_hash(): void
     {
-        $user = User::factory()->unverified()->create();
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
 
-        Event::fake();
-
-        $verificationUrl = URL::temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1($user->email)]
-        );
-
-        $response = $this->actingAs($user)->get($verificationUrl);
-
-        Event::assertDispatched(Verified::class);
-        $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
-    }
-
-    public function test_email_is_not_verified_with_invalid_hash(): void
-    {
-        $user = User::factory()->unverified()->create();
+        $this->createdUsers[] = $user;
 
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',

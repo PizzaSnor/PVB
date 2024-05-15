@@ -3,17 +3,26 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class PasswordUpdateTest extends TestCase
 {
-    use RefreshDatabase;
+    protected $createdUsers = [];
 
-    public function test_password_can_be_updated(): void
+    protected function tearDown(): void
+    {
+        foreach ($this->createdUsers as $user) {
+            $user->delete();
+        }
+
+        parent::tearDown();
+    }
+
+    public function test_wachtwoord_kan_worden_aangepast(): void
     {
         $user = User::factory()->create();
+        $this->createdUsers[] = $user;
 
         $response = $this
             ->actingAs($user)
@@ -31,9 +40,10 @@ class PasswordUpdateTest extends TestCase
         $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
     }
 
-    public function test_correct_password_must_be_provided_to_update_password(): void
+    public function test_correct_wachtwoord_vereist_om_wachtwoord_aan_te_passen(): void
     {
         $user = User::factory()->create();
+        $this->createdUsers[] = $user;
 
         $response = $this
             ->actingAs($user)

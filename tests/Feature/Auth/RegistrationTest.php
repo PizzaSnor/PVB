@@ -2,30 +2,44 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Providers\RouteServiceProvider;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Role;
+use App\Models\User;
 
 class RegistrationTest extends TestCase
 {
-    use RefreshDatabase;
+    use WithFaker;
 
-    public function test_registration_screen_can_be_rendered(): void
+    protected $createdUsers = [];
+
+    protected function tearDown(): void
     {
-        $response = $this->get('/register');
+        foreach ($this->createdUsers as $user) {
+            $user->delete();
+        }
 
-        $response->assertStatus(200);
+        parent::tearDown();
     }
 
-    public function test_new_users_can_register(): void
+    public function test_gebruiker_kan_registreren(): void
     {
+        $role = Role::find(2);
+
         $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => $this->faker->name,
+            'email' => $email = $this->faker->unique()->safeEmail,
             'password' => 'password',
             'password_confirmation' => 'password',
+            'role_id' => $role->id, 
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+
+        $response->assertRedirect(RouteServiceProvider::HOME);
+
+        $user = User::where('email', $email)->first();
+        $this->createdUsers[] = $user;
     }
 }

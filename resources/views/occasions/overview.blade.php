@@ -5,11 +5,15 @@
             <h2 class="font-semibold text-heading4 text-gray-800 leading-tight">
                 {{ __('Occasions') }}
             </h2>
-            <x-primary-button class="ms-3">
-                <a href="{{ route('dashboard.occasions.create') }}">
-                    {{ __('Auto toevoegen') }}
-                </a>
-            </x-primary-button>
+            @auth
+                @if (Auth::user()->isAdmin())
+                    <x-primary-button class="ms-3">
+                        <a href="{{ route('dashboard.occasions.create') }}">
+                            {{ __('Auto toevoegen') }}
+                        </a>
+                    </x-primary-button>
+                @endif
+            @endauth
         </div>
     </x-slot>
 
@@ -149,11 +153,11 @@
                         <div class="card-footer">
                             {{ $occasions->links('pagination::tailwind') }}
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <div class="flex mt-8 gap-x-4 items-stretch">
             <div class="w-1/4">
@@ -163,7 +167,7 @@
                     <p><strong>Omzet:</strong> €{{ number_format($revenueLastWeek, 0, '', '.') }}</p>
                 </div>
             </div>
-        
+
             <div class="w-1/4">
                 <div class="bg-white rounded-lg shadow-md p-6 h-full">
                     <h2 class="text-2xl font-semibold mb-4">Verkochte auto's (Afgelopen maand)</h2>
@@ -171,14 +175,14 @@
                     <p><strong>Omzet:</strong> €{{ number_format($revenueLastMonth, 0, '', '.') }}</p>
                 </div>
             </div>
-        
+
             <div class="w-1/4">
                 <div class="bg-white rounded-lg shadow-md p-6 h-full">
                     <h2 class="text-2xl font-semibold mb-4">Totale omzet (Allertijde)</h2>
-                    <p><strong>Omzet:</strong> €{{ number_format($totalRevenue, 0, '', '.')}}</p>
+                    <p><strong>Omzet:</strong> €{{ number_format($totalRevenue, 0, '', '.') }}</p>
                 </div>
             </div>
-        
+
             <div class="w-1/4">
                 <div class="bg-white rounded-lg shadow-md p-6 h-full">
                     <h2 class="text-2xl font-semibold mb-4">Auto's op voorraad</h2>
@@ -186,8 +190,8 @@
                 </div>
             </div>
         </div>
-        
-            </div>
+
+    </div>
 </x-app-layout>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

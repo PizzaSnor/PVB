@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -18,15 +19,18 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query');
-        $users = User::orderBy('created_at', 'desc');
+        $loggedInUserId = Auth::id();
 
+        $users = User::where('id', '!=', $loggedInUserId)
+            ->orderBy('created_at', 'desc');
+    
         if ($query) {
             $users->where('name', 'like', "%$query%")
                 ->orWhere('email', 'like', "%$query%");
         }
-
+    
         $users = $users->paginate(10)->withQueryString();
-
+    
         return view("users.index", compact('users', 'query'));
     }
 
@@ -55,7 +59,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        if ($user->id === auth()->user()->id && $request->role_id > auth()->user()->role_id) {
+        if ($user->id === auth()->user()->id && $request->role_id < auth()->user()->role_id) {
             return redirect()->route("dashboard.users.index")->with('error', 'Je kunt jezelf niet degraderen naar een rol met minder rechten.');
         }
 

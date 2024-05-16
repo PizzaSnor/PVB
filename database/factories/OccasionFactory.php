@@ -21,20 +21,23 @@ class OccasionFactory extends Factory
      */
     public function definition()
     {
+        $sold = $this->faker->boolean;
+        $sold_date = $sold ? $this->faker->dateTimeBetween('-4 month', now()) : NULL;
         return [
             'title' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'price' => $this->faker->randomFloat(2, 1000, 100000),
+            'price' => $this->faker->numberBetween(1000, 20000),
             'licence_plate' => $this->faker->unique()->regexify('[A-Z]{2}-\d{2}-\d{2}'),
             'odometer' => $this->faker->numberBetween(10000, 200000),
-            'sold' => $this->faker->boolean,
-            'show_when_sold' => $this->faker->boolean,
+            'sold' => $sold,
+            'sold_date' => $sold_date, 
             'brand' => $this->faker->word,
             'model' => $this->faker->word,
             'color' => $this->faker->safeColorName,
             'year' => $this->faker->numberBetween(1990, 2022),
-            'body' => $this->faker->randomElement(['sedan', 'hatchback', 'SUV']),
-            'fuel_type' => $this->faker->randomElement(['benzine', 'diesel', 'elektrisch']),
+            'body' => $this->faker->randomElement(['Sedan', 'Hatchback', 'SUV']),
+            'fuel_type' => $this->faker->randomElement(['Benzine', 'Diesel', 'Elektrisch']),
+            'transmission' => $this->faker->randomElement(['Schakel', 'Automaat', 'Semi-automaat']),
             'power' => $this->faker->numberBetween(50, 300),
             'doors' => $this->faker->numberBetween(2, 5),
             'seats' => $this->faker->numberBetween(2, 7),

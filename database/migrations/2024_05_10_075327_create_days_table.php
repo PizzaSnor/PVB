@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('days', function (Blueprint $table) {
             $table->id();
             $table->integer('weekday');
-            $table->dateTime('opening_time');
-            $table->dateTime('closing_time');
+            $table->dateTime('opening_time')->nullable();
+            $table->dateTime('closing_time')->nullable();
             $table->timestamps();
         });
     }

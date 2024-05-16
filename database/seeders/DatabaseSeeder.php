@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Car;
 use App\Models\Day;
 use App\Models\Occasion;
+use App\Models\OccasionImage;
 use App\Models\PlannedService;
 use App\Models\Role;
 use App\Models\SiteInfo;
@@ -30,7 +31,18 @@ class DatabaseSeeder extends Seeder
 
         $users = User::factory()->count(10)->create();
 
-        Occasion::factory()->count(50)->create();
+        $occasions = Occasion::factory()->count(10)->create();
+
+        $occasions->each(function ($occasion) {
+            OccasionImage::create([
+               'occasion_id' => $occasion->id,
+                'path' => "occasions/" . $occasion->id . "/" . $occasion->id . "_test0.jpg"
+            ]);
+            OccasionImage::create([
+               'occasion_id' => $occasion->id,
+                'path' => "occasions/" . $occasion->id . "/" . $occasion->id . "_test1.jpg"
+            ]);
+        });
 
         $cars = Car::factory()->count(10)->create();
 

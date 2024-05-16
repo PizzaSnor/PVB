@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
         });
 
         SiteInfo::create([
-            'main_content' => 'Altijd al je auto willen verkopen? Of wil je gewoon een simpele onderhoudsbeur?Hier kan het gemakkelijk en snel! Verkoop je auto aan ons zodat wij er winst op kunnen maken! Ook kan je hier gemakkelijk occasions bekijken!',
+            'main_content' => 'Altijd al je auto willen verkopen? Of wil je gewoon een simpele onderhoudsbeurt? Hier kan het gemakkelijk en snel! Verkoop je auto aan ons zodat wij er winst op kunnen maken! Ook kan je hier gemakkelijk occasions bekijken!',
             'contact_email' => 'info@np-auto.nl',
             'contact_number' => '050 12345678',
             'max_cars_per_day' => 5

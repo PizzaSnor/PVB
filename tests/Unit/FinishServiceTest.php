@@ -16,11 +16,17 @@ class FinishServiceTest extends TestCase
     use WithFaker;
 
     private array $createdServices = [];
+    private array $createdCars = [];
+
     private array $createdUsers = [];
     protected function tearDown(): void
     {
         foreach($this->createdServices as $service) {
             $service->delete();
+        }
+
+        foreach($this->createdCars as $car) {
+            $car->delete();
         }
 
         foreach($this->createdUsers as $user) {
@@ -42,6 +48,8 @@ class FinishServiceTest extends TestCase
         $this->createdUsers[] = $user;
 
         $car = Car::factory()->create();
+
+        $this->createdCars[] = $car;
 
         $plannedService = PlannedService::factory()->create([
             'car_id' => $car->id,

@@ -25,8 +25,8 @@ class OccasionStoreRequest extends FormRequest
     {
         return [
             'licence_plate' => 'required|string|max:50',
-            'odometer' => 'required|numeric|max:10',
-            'price' => 'required|numeric|max:50',
+            'odometer' => 'required|numeric|digits_between:1,11',
+            'price' => 'required|numeric|max:20000',
             'title' => 'required|string|max:50',
             'description' => 'required|string',
             'power' => 'required|string|max:50',
@@ -43,14 +43,16 @@ class OccasionStoreRequest extends FormRequest
     public function messages()
     {
         return [
+            'title.required' => 'De titel is verplicht.',
+            'title.max' => 'De titel mag niet langer zijn dan :max tekens.',
             'licence_plate.required' => 'Het kenteken is verplicht.',
             'licence_plate.max' => 'Het kenteken mag niet langer zijn dan :max tekens.',
             'odometer.required' => 'De kilometerstand is verplicht.',
             'odometer.numeric' => 'De kilometerstand moet numeriek zijn.',
-            'odometer.max' => 'De kilometerstand mag niet langer zijn dan :max tekens.',
+            'odometer.digits_between' => 'De kilometerstand moet tussen :min en :max cijfers bevatten.',
             'price.required' => 'De prijs is verplicht.',
             'price.numeric' => 'De prijs moet numeriek zijn.',
-            'price.max' => 'De prijs mag niet langer zijn dan :max tekens.',
+            'price.max' => 'De prijs mag niet hoger zijn dan :max euro.',
             'title.required' => 'De titel is verplicht.',
             'title.max' => 'De titel mag niet langer zijn dan :max tekens.',
             'description.required' => 'De beschrijving is verplicht.',

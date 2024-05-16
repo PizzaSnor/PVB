@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="w-1/2">
                                     <label for="price" class="form-label block">Prijs</label>
-                                    <input type="text"
+                                    <input type="number"
                                         class="form-control bg-gray-100 border-none w-full focus:outline-yellow focus:ring-0 focus:border-yellow @error('price') is-invalid @enderror"
                                         id="price" name="price" value="{{ old('price') }}">
                                     @error('price')

@@ -91,6 +91,7 @@ class OccasionController extends Controller
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function store(OccasionStoreRequest $request)
+    // public function store(Request $request)
     {
         $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));
         $licencePlate = $request->input('licence_plate');
@@ -108,7 +109,7 @@ class OccasionController extends Controller
             $rdwData = json_decode($response->getBody(), true);
 
             if (!empty($rdwData)) {
-                $year = substr($rdwData[0]['datum_eerste_toelating'], 0, 4);
+                $year = substr($rdwData[0]['datum_eerste_toelating'], 0, 4) ?? 'N/A';
 
                 $carDetails = [
                     'licence_plate' => $licencePlate,
@@ -347,7 +348,7 @@ class OccasionController extends Controller
                     }
                 }
 
-                return redirect()->route('dashboard.occasions.index')->with('success', 'Je hebt een nieuwe auto toegevoegd.');
+                return redirect()->route('dashboard.occasions.index')->with('success', 'Je hebt een auto aangepast.');
             } else {
                 return back()->with(['error' => 'Auto gegevens niet gevonden'])->withInput();
             }

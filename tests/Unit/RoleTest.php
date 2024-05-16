@@ -4,33 +4,30 @@ namespace Tests\Unit;
 
 use App\Models\Role;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 
 class RoleTest extends TestCase
 {
-    private array $createdRoles = [];
-
-    protected function tearDown(): void
+    use DatabaseTransactions;
+    public function testKanRolMaken()
     {
-        foreach($this->createdRoles as $role) {
-            $role->delete();
-        }
-        parent::tearDown();
+        $role = Role::factory()->create(['name' => 'Test Role']);
+        $this->assertNotNull($role);
+        $this->assertEquals('Test Role', $role->name);
     }
-    /**
-     * A basic unit test example.
-     */
-    public function test_creeer_nieuwe_rol(): void
+
+    public function testKanRolAanpassen()
     {
-        $roleData = [
-            'name' => 'Test',
-        ];
+        $role = Role::factory()->create(['name' => 'Test Role']);
+        $role->update(['name' => 'Updated Role']);
+        $this->assertEquals('Updated Role', $role->fresh()->name);
+    }
 
-        $role = Role::create($roleData);
-
-        $this->createdRoles[] = $role;
-
-        $this->assertDatabaseHas('roles', [
-            'name' => 'Test',
-        ]);
+    public function testKanRolVerwjderen()
+    {
+        $role = Role::factory()->create(['name' => 'Test Role']);
+        $role->delete();
+        $this->assertDatabaseMissing('roles', ['name' => 'Test Role']);
     }
 }

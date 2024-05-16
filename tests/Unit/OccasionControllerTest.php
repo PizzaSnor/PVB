@@ -4,226 +4,281 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\Occasion;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+
+use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 
 class OccasionControllerTest extends TestCase
 {
-    use WithFaker, DatabaseTransactions;
-    public function testApiCall()
+    use WithFaker;
+    use DatabaseTransactions;
+
+    public function testApiMockOmAutoViaApiTeMaken()
     {
-        $mockHandler = new MockHandler([
-            new Response(200, [], '[
-                {
-                    "kenteken": "15KZH4",
-                    "merk": "TESLA",
-                    "handelsbenaming": "TESLA ROADSTER",
-                    "eerste_kleur": "WIT",
-                    "inrichting": "cabriolet",
-                    "aantal_zitplaatsen": "2",
-                    "aantal_deuren": "2",
-                    "vervaldatum_apk_dt": "2024-06-26T00:00:00.000",
-                    "cilinderinhoud": "N/A",
-                    "massa_ledig_voertuig": "1235",
-                    "bruto_bpm": "N/A",
-                    "datum_eerste_toelating": "20100304"
-                }
-            ]'),
-            new Response(200, [], '[{"brandstofverbruik_gecombineerd": "7.32", "brandstof_omschrijving": "Elektrisch"}]')
-        ]);
+        $user = User::factory()->create(['role_id' => 3]);
+
+        $mockResponseData = [
+            [
+                'merk' => 'TESLA',
+                'handelsbenaming' => 'TESLA ROADSTER',
+            ]
+        ];
+
+        $mockResponse = new Response(200, [], json_encode($mockResponseData));
+
+        //yt dotnet
+        $mockHandler = new MockHandler([$mockResponse]);
         $handlerStack = HandlerStack::create($mockHandler);
         $client = new Client(['handler' => $handlerStack]);
 
         $this->app->instance(Client::class, $client);
 
-        $data = [
+        $occasionData = [
             'title' => 'Test Occasion',
             'description' => 'Test Description',
             'price' => 15000,
             'licence_plate' => '15KZH4',
-            'transmission' => 'Elektrisch',
-            'power' => 200,
-            'images' => [],
+            'transmission' => 'Semi-automaat',
+            'power' => '200',
+            'odometer' => 50000,
+            'sold' => false,
+            'show_when_sold' => false,
+            'fuel_efficiency' => '7.32',
+            'fuel_type' => 'Elektriciteit',
+            'doors' => '2',
+            'seats' => '2',
+            'weight' => '1235',
+            'apk_end_date' => '2024-06-26T00:00:00.000',
+            'color' => 'WIT',
+            'year' => '20100304',
+            'body' => 'cabriolet',
+            'cc' => 'N/A',
+            'tax' => 'N/A',
         ];
 
-        $response = $this->post(route('dashboard.occasions.store'), $data);
+        $response = $this->actingAs($user)->post(route('dashboard.occasions.store'), $occasionData);
 
-        $this->assertEquals(302, $response->getStatusCode());
+        $response->assertRedirect(route('dashboard.occasions.index'));
+
+        $occasion = Occasion::where('licence_plate', '15KZH4')->first();
+        $this->assertNotNull($occasion);
+        $this->assertEquals('TESLA', $occasion->brand);
+        $this->assertEquals('TESLA ROADSTER', $occasion->model);
     }
-
     public function testAutoKunnenAanmaken()
     {
         $user = User::factory()->create(['role_id' => 3]);
 
-        $licencePlate = '15KZH4';
-        $transmission = 'Semi-automaat';
-        $power = 200;
-        $title = 'Test Occasion';
-        $description = 'Test Description';
-        $price = 15000;
-        $odometer = 50000;
-        $fuelEfficiency = '7.32';
-        $fuelType = 'Elektriciteit';
-
-        $occasion = new Occasion();
-        $occasion->licence_plate = $licencePlate;
-        $occasion->transmission = $transmission;
-        $occasion->power = $power;
-        $occasion->title = $title;
-        $occasion->description = $description;
-        $occasion->price = $price;
-        $occasion->odometer = $odometer;
-        $occasion->sold = false;
-        $occasion->sold_date = null;
-        $occasion->show_when_sold = false;
-        $occasion->brand = 'TESLA';
-        $occasion->model = 'TESLA ROADSTER';
-        $occasion->color = 'WIT';
-        $occasion->year = '20100304';
-        $occasion->body = 'cabriolet';
-        $occasion->seats = '2';
-        $occasion->weight = '1235';
-        $occasion->tax = 'N/A';
-        $occasion->cc = 'N/A';
-        $occasion->doors = '2';
-        $occasion->apk_end_date = '2024-06-26T00:00:00.000';
-        $occasion->fuel_type = 'Elektriciteit';
-        $occasion->fuel_efficiency = '7.32';
-        $occasion->save();
-
-        $response = $this->actingAs($user)->post(route('dashboard.occasions.store'), [
-            'title' => $title,
-            'description' => $description,
-            'price' => $price,
-            'licence_plate' => $licencePlate,
-            'transmission' => $transmission,
-            'power' => $power,
-            'odometer' => $odometer,
-            'fuel_efficiency' => $fuelEfficiency,
-            'fuel_type' => $fuelType,
-            'images' => [],
+        $occasionData = Occasion::factory()->raw([
+            'brand' => 'TESLA',
+            'model' => 'TESLA ROADSTER',
+            'title' => 'Test Occasion',
+            'description' => 'Test Description',
+            'price' => 15000,
+            'licence_plate' => '15KZH4',
+            'transmission' => 'Semi-automaat',
+            'power' => '200',
+            'odometer' => 50000,
+            'sold' => false,
+            'sold_date' => null,
+            'show_when_sold' => false,
+            'fuel_efficiency' => '7.32',
+            'fuel_type' => 'Elektriciteit',
+            'doors' => '2',
+            'seats' => '2',
+            'weight' => '1235',
+            'apk_end_date' => '2024-06-26T00:00:00.000',
+            'color' => 'WIT',
+            'year' => '20100304',
+            'body' => 'cabriolet',
+            'cc' => 'N/A',
+            'tax' => 'N/A',
         ]);
 
-        $this->assertDatabaseHas('occasions', [
-            'title' => $title,
-            'description' => $description,
-            'price' => $price,
-            'licence_plate' => $licencePlate,
-            'transmission' => $transmission,
-            'power' => $power,
-            'odometer' => $odometer,
-            'fuel_efficiency' => $fuelEfficiency,
-            'fuel_type' => $fuelType,
-        ]);
+        $response = $this->actingAs($user)->post(route('dashboard.occasions.store'), $occasionData);
 
-        $occasion = Occasion::where('licence_plate', $licencePlate)->first();
+        $response->assertRedirect(route('dashboard.occasions.index'));
+
+        $occasion = Occasion::where('licence_plate', '15KZH4')->first();
         $this->assertNotNull($occasion);
     }
 
-    public function testAutoMakenMetInformatieUitDeApi()
+    public function testAutoKunnenBewerken()
     {
         $user = User::factory()->create(['role_id' => 3]);
+        $occasion = Occasion::factory()->create();
 
-        $apiResponse =
-        '[
-        {
-            "kenteken": "15KZH4",
-            "merk": "TESLA",
-            "handelsbenaming": "TESLA ROADSTER",
-            "eerste_kleur": "WIT",
-            "inrichting": "cabriolet",
-            "aantal_zitplaatsen": "2",
-            "aantal_deuren": "2",
-            "vervaldatum_apk_dt": "2024-06-26T00:00:00.000",
-            "cilinderinhoud": "N/A",
-            "massa_ledig_voertuig": "1235",
-            "bruto_bpm": "N/A",
-            "datum_eerste_toelating": "20100304"
-        }
-    ]';
-
-        $fuelApiResponse = '[{"brandstofverbruik_gecombineerd": "7.32", "brandstof_omschrijving": "Elektrisch"}]';
-
-        $mockHandler = new MockHandler([
-            new Response(
-                200,
-                [],
-                $apiResponse
-            ),
-            new Response(
-                200,
-                [],
-                $fuelApiResponse
-            )
-        ]);
-        $handlerStack = HandlerStack::create($mockHandler);
-        $client = new Client(['handler' => $handlerStack]);
-
-        $this->app->instance(Client::class, $client);
-
-        $licencePlate = '15KZH4';
-        $transmission = 'Semi-automaat';
-        $power = 200;
-        $title = 'Test Occasion';
-        $description = 'Test Description';
-        $price = 15000;
-        $odometer = 50000;
-
-        $occasion = new Occasion();
-        $occasion->licence_plate = $licencePlate;
-        $occasion->transmission = $transmission;
-        $occasion->power = $power;
-        $occasion->title = $title;
-        $occasion->description = $description;
-        $occasion->price = $price;
-        $occasion->odometer = $odometer;
-        $occasion->sold = false;
-        $occasion->sold_date = null;
-        $occasion->show_when_sold = false;
-        $occasion->brand = 'TESLA';
-        $occasion->model = 'TESLA ROADSTER';
-        $occasion->color = 'WIT';
-        $occasion->year = '20100304';
-        $occasion->body = 'cabriolet';
-        $occasion->seats = '2';
-        $occasion->weight = '1235';
-        $occasion->tax = 'N/A';
-        $occasion->cc = 'N/A';
-        $occasion->doors = '2';
-        $occasion->apk_end_date = '2024-06-26T00:00:00.000';
-        $occasion->fuel_type = 'Elektriciteit';
-        $occasion->fuel_efficiency = '7.32';
-        $occasion->save();
-
-        $response = $this->actingAs($user)->post(route('dashboard.occasions.store'), [
-            'title' => $title,
-            'description' => $description,
-            'price' => $price,
-            'licence_plate' => $licencePlate,
-            'transmission' => $transmission,
-            'power' => $power,
-            'odometer' => $odometer,
-            'images' => [],
-        ]);
-
-        $this->assertDatabaseHas('occasions', [
-            'title' => $title,
-            'description' => $description,
-            'price' => $price,
-            'licence_plate' => $licencePlate,
-            'transmission' => $transmission,
-            'power' => $power,
-            'odometer' => $odometer,
+        $occasionData = [
+            'brand' => 'TESLA',
+            'model' => 'TESLA ROADSTER',
+            'title' => 'Veranderde titel',
+            'description' => 'Test Description',
+            'price' => 15000,
+            'licence_plate' => '15KZH4',
+            'transmission' => 'Semi-automaat',
+            'power' => '200',
+            'odometer' => 50000,
+            'sold' => false,
+            'sold_date' => null,
+            'show_when_sold' => false,
             'fuel_efficiency' => '7.32',
             'fuel_type' => 'Elektriciteit',
-        ]);
+            'doors' => '2',
+            'seats' => '2',
+            'weight' => '1235',
+            'apk_end_date' => '2024-06-26T00:00:00.000',
+            'color' => 'WIT',
+            'year' => '20100304',
+            'body' => 'cabriolet',
+            'cc' => 'N/A',
+            'tax' => 'N/A',
+        ];
 
-        $occasion = Occasion::where('licence_plate', $licencePlate)->first();
+        $response = $this->actingAs($user)->put(route('dashboard.occasions.update', ['occasion' => $occasion->id]), $occasionData);
+
+        $response->assertRedirect(route('dashboard.occasions.index'));
+
+        $occasion = Occasion::where('licence_plate', '15KZH4')->first();
+
         $this->assertNotNull($occasion);
+    }
+
+    public function testAutoKunnenVerkopen()
+    {
+        $user = User::factory()->create(['role_id' => 3]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($user)->put(route('dashboard.occasions.sell', ['occasion' => $occasion->id]));
+
+        $response->assertRedirect(route('dashboard.occasions.index'));
+
+        $occasion = Occasion::where('id', $occasion->id)->first();
+
+        $this->assertNotNull($occasion->sold_date);
+    }
+
+    public function testAutoKunnenVerwijderen()
+    {
+        $user = User::factory()->create(['role_id' => 3]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('dashboard.occasions.destroy', ['occasion' => $occasion->id]));
+
+        $response->assertRedirect(route('dashboard.occasions.index'));
+
+        $occasion = Occasion::where('id', $occasion->id)->first();
+
+        $this->assertNull($occasion);
+    }
+
+    public function testGebruikerHeeftGeenToegangTotCreatePagina()
+    {
+        $gebruiker = User::factory()->create(['role_id' => 1]);
+
+        $response = $this->actingAs($gebruiker)->get(route('dashboard.occasions.create'));
+        $response->assertStatus(302);
+    }
+
+    public function testMonteurHeeftGeenToegangTotCreatePagina()
+    {
+        $monteur = User::factory()->create(['role_id' => 2]);
+
+        $response = $this->actingAs($monteur)->get(route('dashboard.occasions.create'));
+        $response->assertStatus(302);
+    }
+
+    public function testAdminHeeftToegangTotCreatePagina()
+    {
+        $admin = User::factory()->create(['role_id' => 3]);
+
+        $response = $this->actingAs($admin)->get(route('dashboard.occasions.create'));
+        $response->assertSuccessful();
+    }
+
+    public function testGebruikerHeeftGeenToegangTotBewerkPagina()
+    {
+        $gebruiker = User::factory()->create(['role_id' => 1]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($gebruiker)->get(route('dashboard.occasions.edit', ['occasion' => $occasion->id]));
+        $response->assertStatus(302);
+    }
+
+    public function testMonteurHeeftGeenToegangTotBewerkPagina()
+    {
+        $monteur = User::factory()->create(['role_id' => 2]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($monteur)->get(route('dashboard.occasions.edit', ['occasion' => $occasion->id]));
+        $response->assertStatus(302);
+    }
+
+    public function testAdminHeeftToegangTotBewerkPagina()
+    {
+        $admin = User::factory()->create(['role_id' => 3]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($admin)->get(route('dashboard.occasions.edit', ['occasion' => $occasion->id]));
+        $response->assertSuccessful();
+    }
+
+    public function testGebruikerKanOccasionNietVerkopen()
+    {
+        $gebruiker = User::factory()->create(['role_id' => 1]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($gebruiker)->put(route('dashboard.occasions.sell', ['occasion' => $occasion->id]));
+        $response->assertStatus(302);
+    }
+
+    public function testMonteurKanOccasionVerkopen()
+    {
+        $monteur = User::factory()->create(['role_id' => 2]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($monteur)->put(route('dashboard.occasions.sell', ['occasion' => $occasion->id]));
+        $response->assertStatus(302);
+    }
+
+    public function testAdminKanOccasionVerkopen()
+    {
+        $admin = User::factory()->create(['role_id' => 3]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($admin)->put(route('dashboard.occasions.sell', ['occasion' => $occasion->id]));
+        $response->assertRedirect(route('dashboard.occasions.index'));
+    }
+
+
+    public function testGebruikerKanOccasionNietVerwijderen()
+    {
+        $gebruiker = User::factory()->create(['role_id' => 1]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($gebruiker)->delete(route('dashboard.occasions.destroy', ['occasion' => $occasion->id]));
+        $response->assertStatus(302);
+    }
+
+    public function testMonteurKanOccasionNietVerwijderen()
+    {
+        $monteur = User::factory()->create(['role_id' => 2]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($monteur)->delete(route('dashboard.occasions.destroy', ['occasion' => $occasion->id]));
+        $response->assertStatus(302);
+    }
+
+    public function testAdminKanOccasionVerwijderen()
+    {
+        $admin = User::factory()->create(['role_id' => 3]);
+        $occasion = Occasion::factory()->create();
+
+        $response = $this->actingAs($admin)->delete(route('dashboard.occasions.destroy', ['occasion' => $occasion->id]));
+        $response->assertRedirect(route('dashboard.occasions.index'));
     }
 }

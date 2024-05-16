@@ -25,7 +25,6 @@ class PlannedServiceFactory extends Factory
             'completed' => $this->faker->boolean,
             'service_date' => $this->faker->dateTimeBetween('now', '+30 days'),
             'description' => $this->faker->sentence,
-            // Add other fields here
         ];
     }
 }

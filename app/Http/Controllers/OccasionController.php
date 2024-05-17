@@ -92,7 +92,7 @@ class OccasionController extends Controller
      */
     public function store(OccasionStoreRequest $request)
     {
-        $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));
+        $licencePlateStripped = strtoupper(str_replace('-', '', $request->input('licence_plate')));
         $licencePlate = $request->input('licence_plate');
         $transmission = $request->input('transmission');
         $power = $request->input('power');
@@ -262,7 +262,7 @@ class OccasionController extends Controller
     }
 
 
-    
+
     public function update(Occasion $occasion, OccasionStoreRequest $request)
     {
         $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));

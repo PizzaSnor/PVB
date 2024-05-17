@@ -47,7 +47,7 @@
                                         <th class="text-lg px-4 py-2 text-left">
                                             <a
                                                 href="{{ route('dashboard.occasions.index', ['sort_by' => 'brand', 'sort_direction' => $sortBy === 'brand' && $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
-                                                Brand
+                                                Merk
                                                 @if ($sortBy === 'brand')
                                                     @if ($sortDirection === 'asc')
                                                         <i class="fas fa-sort-up"></i>
@@ -60,7 +60,7 @@
                                         <th class="text-lg px-4 py-2 text-left">
                                             <a
                                                 href="{{ route('dashboard.occasions.index', ['sort_by' => 'price', 'sort_direction' => $sortBy === 'price' && $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
-                                                Price
+                                                Prijs
                                                 @if ($sortBy === 'price')
                                                     @if ($sortDirection === 'asc')
                                                         <i class="fas fa-sort-up"></i>
@@ -104,8 +104,8 @@
                                                     </form>
                                                 </td>
                                             @endif
-                                            <td class="hidden md:table-cell px-4 py-2 text-left"></td>
-                                            <td class="hidden md:table-cell px-4 py-2 text-left"></td>
+                                            <td class="hidden md:table-cell px-4 py-2 text-left">{{$occasion->brand}}</td>
+                                            <td class="hidden md:table-cell px-4 py-2 text-left">€ {{$occasion->price}}</td>
 
                                             <td class="w-fit px-4 py-2">
                                                 @can('delete', $occasion)

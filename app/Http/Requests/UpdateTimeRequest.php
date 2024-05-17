@@ -25,7 +25,7 @@ class UpdateTimeRequest extends FormRequest
         return [
             'days.*.opening_time.date_format' => 'De openings tijd moet in het formaat uur:minuut zijn.',
             'days.*.closing_time.date_format' => 'De sluitingstijd moet in het formaat uur:minuut zijn.',
-            'days.*.closing_time.after_or_equal' => 'De sluitingstijd moet na of gelijk aan de openingstijd liggen.',
+            'days.*.closing_time.after_or_equal' => 'De sluitingstijd moet na de openingstijd liggen.',
             'days.*.closed.boolean' => 'Ongeldige waarde voor gesloten veld.',
         ];
     }

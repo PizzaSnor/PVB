@@ -177,6 +177,7 @@ class OccasionController extends Controller
         $query = $request->input('query');
 
         $occasions = Occasion::query();
+
         $now = Carbon::now();
 
         if ($query) {
@@ -188,26 +189,27 @@ class OccasionController extends Controller
         $sortBy = $request->input('sort_by', 'created_at');
         $sortDirection = $request->input('sort_direction', 'desc');
 
-        if ($sortBy === 'brand' || $sortBy === 'price') {
+
+        if ($sortBy === 'brand') {
             $occasions->orderBy($sortBy, $sortDirection);
         } else {
             $occasions->orderBy('created_at', 'desc');
         }
 
         $soldLastWeek = Occasion::where('sold', true)
-        ->where('sold_date', '>=', $now->copy()->subWeek())
+            ->where('sold_date', '>=', $now->copy()->subWeek())
             ->count();
 
         $soldLastMonth = Occasion::where('sold', true)
-        ->where('sold_date', '>=', $now->copy()->subMonth())
+            ->where('sold_date', '>=', $now->copy()->subMonth())
             ->count();
 
         $revenueLastWeek = Occasion::where('sold', true)
-        ->where('sold_date', '>=', $now->copy()->subWeek())
+            ->where('sold_date', '>=', $now->copy()->subWeek())
             ->sum('price');
 
         $revenueLastMonth = Occasion::where('sold', true)
-        ->where('sold_date', '>=', $now->copy()->subMonth())
+            ->where('sold_date', '>=', $now->copy()->subMonth())
             ->sum('price');
 
         $totalRevenue = Occasion::where('sold', true)->sum('price');
@@ -286,18 +288,18 @@ class OccasionController extends Controller
 
                 $carDetails = [
                     'licence_plate' => $licencePlate,
-                    'brand' => $rdwData[0]['merk']?? 'N/A',
-                    'model' => $rdwData[0]['handelsbenaming']?? 'N/A',
-                    'color' => $rdwData[0]['eerste_kleur']?? 'N/A',
+                    'brand' => $rdwData[0]['merk'] ?? 'N/A',
+                    'model' => $rdwData[0]['handelsbenaming'] ?? 'N/A',
+                    'color' => $rdwData[0]['eerste_kleur'] ?? 'N/A',
                     'year' => $year,
-                    'body' => $rdwData[0]['inrichting']?? 'N/A',
+                    'body' => $rdwData[0]['inrichting'] ?? 'N/A',
                     'power' => $power,
                     'transmission' => $transmission,
-                    'doors' => $rdwData[0]['aantal_deuren']?? 'N/A',
-                    'seats' => $rdwData[0]['aantal_zitplaatsen']?? 'N/A',
-                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt']?? 'N/A',
+                    'doors' => $rdwData[0]['aantal_deuren'] ?? 'N/A',
+                    'seats' => $rdwData[0]['aantal_zitplaatsen'] ?? 'N/A',
+                    'apk_end_date' => $rdwData[0]['vervaldatum_apk_dt'] ?? 'N/A',
                     'cc' => $rdwData[0]['cilinderinhoud'] ?? "N/A",
-                    'weight' => $rdwData[0]['massa_ledig_voertuig']?? 'N/A',
+                    'weight' => $rdwData[0]['massa_ledig_voertuig'] ?? 'N/A',
                     'tax' => $rdwData[0]['bruto_bpm'] ?? "N/A",
                     'title' => $title,
                     'description' => $description,
@@ -312,7 +314,7 @@ class OccasionController extends Controller
 
                 if (!empty($fuelData)) {
                     $carDetails['fuel_efficiency'] = $fuelData[0]['brandstofverbruik_gecombineerd'] ?? "N/A";
-                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving']?? 'N/A';
+                    $carDetails['fuel_type'] = $fuelData[0]['brandstof_omschrijving'] ?? 'N/A';
                 }
 
                 $occasion->update($carDetails);

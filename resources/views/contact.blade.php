@@ -11,8 +11,10 @@
             <h1 class="text-6xl text-center md:text-left font-bold">Hier kan je ons vinden!</h1>
             <p class="text-xl text-center md:text-left font-semibold">Niet zo goed in navigeren? Google maps wel! Met deze knop hier onder word je gemakkelijk zo snel mogelijk naar ons toe geleid</p>
             <ul class="text-xl">
-                <li><strong>- Adres:</strong> Muntinglaan 3</li>
-                <li><strong>- Postcode:</strong> 9727 JT</li>
+                <li><strong>Adres:</strong> Muntinglaan 3</li>
+                <li><strong>Postcode:</strong> 9727 JT</li>
+                <li><strong>Telefoon: </strong>{{ $contactInfo->contact_number }}</li>
+                <li><strong>Email: </strong>{{ $contactInfo->contact_email }}</li>
             </ul>
             <a target="_blank" href="https://www.google.com/maps/dir//Muntinglaan+3,+Groningen/@53.2024394,6.5411964,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x47c832ae8b38fb37:0xf8ed82115525c5de!2m2!1d6.5622814!2d53.2034332?entry=ttu">
                 <x-yellow-button content="Plan een route in!" />
@@ -22,18 +24,18 @@
             <h2 class="text-4xl font-semibold">Openingstijden</h2>
             <div class="flex gap-x-4">
                 <ul class="text-xl">
-                    <li><strong>- Maandag:</strong></li>
-                    <li><strong>- Dinsdag:</strong></li>
-                    <li><strong>- Woensdag:</strong></li>
-                    <li><strong>- Donderdag:</strong></li>
-                    <li><strong>- Vrijdag:</strong></li>
-                    <li><strong>- Zaterdag:</strong></li>
-                    <li><strong>- Zondag:</strong></li>
+                    <li><strong>Maandag:</strong></li>
+                    <li><strong>Dinsdag:</strong></li>
+                    <li><strong>Woensdag:</strong></li>
+                    <li><strong>Donderdag:</strong></li>
+                    <li><strong>Vrijdag:</strong></li>
+                    <li><strong>Zaterdag:</strong></li>
+                    <li><strong>Zondag:</strong></li>
                 </ul>
                 <ul class="text-xl">
                     @foreach($days as $day)
                         @if(!$day->closed)
-                            <li> {{ \Carbon\Carbon::parse($day->opening_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($day->closing_time)->format('H:i') }} </li>
+                            <li> {{ \Carbon\Carbon::parse($day->opening_time)->format('H:i') }} {{ \Carbon\Carbon::parse($day->closing_time)->format('H:i') }} </li>
                         @else
                             <li>Gesloten</li>
                         @endif

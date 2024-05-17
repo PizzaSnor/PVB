@@ -36,8 +36,8 @@ class ServiceController extends Controller
      */
     public function store(ServiceRequest $request)
     {
-        $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));
-        $licencePlate = $request->input('licence_plate');
+        $licencePlate = strtoupper($request->input('licence_plate'));
+        $licencePlateStripped = str_replace('-', '', $licencePlate);
         $maxCarsPerDay = SiteInfo::first()->max_cars_per_day;
         $client = new Client();
 

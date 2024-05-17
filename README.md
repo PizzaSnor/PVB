@@ -3,7 +3,7 @@
 </div>
 
 
-## About KTiMpress
+## About NP-Auto
 
 NP-Auto is een programma voor een occasion website. Hier kunnen beheerders occasions beheren en monteurs service beurten afronden. Als gebruiker kan je hier occasions bekijken en contact opnemen met NP-auto voor verdere informatie of om een afspraak in te plannen
 

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex flex-col items-center lg:flex-row gap-x-8 mb-0 lg:mb-48 mt-10 px-10 xl:px-60">
+    <div class="flex flex-col items-center lg:flex-row gap-x-8 mb-0 lg:mb-36 mt-20 px-10 xl:px-60">
         <div class="lg:hidden">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1194.877629903935!2d6.562264057916276!3d53.20430531068849!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c832ae8b38fb37%3A0xf8ed82115525c5de!2sMuntinglaan%203%2C%209727%20JT%20Groningen!5e0!3m2!1snl!2snl!4v1715603218201!5m2!1snl!2snl" width="300" height="300" style="border:1px solid black;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>

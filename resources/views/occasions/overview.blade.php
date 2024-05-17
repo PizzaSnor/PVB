@@ -39,15 +39,10 @@
                             <table class="table-auto w-full bg-white shadow-md rounded my-6">
                                 <thead>
                                     <tr class="bg-slate-100 border">
-                                        <th class="text-lg px-4 py-2 text-left">Merk en model</th>
-                                        <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Kenteken</th>
-                                        <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Verkocht</th>
-                                        <th class="px-4 py-2"></th>
-
                                         <th class="text-lg px-4 py-2 text-left">
                                             <a
                                                 href="{{ route('dashboard.occasions.index', ['sort_by' => 'brand', 'sort_direction' => $sortBy === 'brand' && $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
-                                                Brand
+                                                Merk en model
                                                 @if ($sortBy === 'brand')
                                                     @if ($sortDirection === 'asc')
                                                         <i class="fas fa-sort-up"></i>
@@ -57,19 +52,12 @@
                                                 @endif
                                             </a>
                                         </th>
+                                        <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Kenteken</th>
+                                        <th class="text-lg hidden md:table-cell px-4 py-2 text-left">Verkocht</th>
                                         <th class="text-lg px-4 py-2 text-left">
-                                            <a
-                                                href="{{ route('dashboard.occasions.index', ['sort_by' => 'price', 'sort_direction' => $sortBy === 'price' && $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
-                                                Price
-                                                @if ($sortBy === 'price')
-                                                    @if ($sortDirection === 'asc')
-                                                        <i class="fas fa-sort-up"></i>
-                                                    @else
-                                                        <i class="fas fa-sort-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
+                                            Prijs
                                         </th>
+                                        <th class="px-4 py-2"></th>
                                         <th class="px-4 py-2"></th>
                                         <th class="px-4 py-2"></th>
                                     </tr>
@@ -83,9 +71,13 @@
                                                 {{ $occasion->licence_plate }}</td>
                                             @if ($occasion->sold)
                                                 <td class="hidden md:table-cell  px-4 py-2 text-left">Ja</td>
+                                                <td class="hidden md:table-cell px-4 py-2 text-left">€
+                                                    {{ $occasion->price }}</td>
                                                 <td></td>
                                             @else
                                                 <td class="hidden md:table-cell  px-4 py-2 text-left">Nee</td>
+                                                <td class="hidden md:table-cell px-4 py-2 text-left">€
+                                                    {{ $occasion->price }}</td>
                                                 <td class="w-fit px-4 py-2">
                                                     <form
                                                         action="{{ route('dashboard.occasions.sell', $occasion->id) }}"
@@ -104,9 +96,7 @@
                                                     </form>
                                                 </td>
                                             @endif
-                                            <td class="hidden md:table-cell px-4 py-2 text-left"></td>
-                                            <td class="hidden md:table-cell px-4 py-2 text-left"></td>
-
+                                            
                                             <td class="w-fit px-4 py-2">
                                                 @can('delete', $occasion)
                                                     <a class="btn"
@@ -120,7 +110,6 @@
                                                     </a>
                                                 @endcan
                                             </td>
-
                                             <td class="w-fit px-4 py-2">
                                                 @can('delete', $occasion)
                                                     <form
@@ -149,6 +138,7 @@
                                     @endforelse
                                 </tbody>
                             </table>
+
                         </div>
                         <div class="card-footer">
                             {{ $occasions->links('pagination::tailwind') }}

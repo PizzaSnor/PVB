@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div @class([' lg:h-[calc(100vh-20rem)]' => count($occasions) <= 3]) class="flex-grow ">
+    <div @class(['mb-40 md:mb-0 lg:h-[calc(100vh-20rem)]' => count($occasions) <= 3])>
         <div class="flex flex-col items-center xl:mx-64">
             <div class="flex items-center flex-col md:flex-row mb-4 justify-between">
                 <h1 class="text-4xl mx-4 text-center my-8">Onze occasions!</h1>

@@ -10,18 +10,16 @@ use App\Models\PlannedService;
 use App\Models\Role;
 use App\Models\SiteInfo;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Seeder for np-auto.
      */
     public function run()
     {
-        // Create roles
         $roles = [
             ['name' => 'Gebruiker'],
             ['name' => 'Monteur'],
@@ -77,6 +75,12 @@ class DatabaseSeeder extends Seeder
            'email' => 'admin@admin.nl',
            'name' => 'Admin',
            'role_id' => 3,
+           'password' => 12345678
+        ]);
+        User::create([
+           'email' => 'monteur@monteur.nl',
+           'name' => 'Monteur',
+           'role_id' => 2,
            'password' => 12345678
         ]);
     }

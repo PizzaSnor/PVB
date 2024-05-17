@@ -91,7 +91,6 @@ class OccasionController extends Controller
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function store(OccasionStoreRequest $request)
-    // public function store(Request $request)
     {
         $licencePlateStripped = str_replace('-', '', $request->input('licence_plate'));
         $licencePlate = $request->input('licence_plate');

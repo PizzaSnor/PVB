@@ -22,7 +22,7 @@ class OccasionFactory extends Factory
     public function definition()
     {
         $sold = $this->faker->boolean;
-        $sold_date = $sold ? $this->faker->dateTimeBetween('-4 month', now()) : NULL;
+        $sold_date = $sold ? $this->faker->dateTimeBetween('-3 month', now()) : NULL;
         return [
             'title' => $this->faker->word,
             'description' => $this->faker->paragraph,
